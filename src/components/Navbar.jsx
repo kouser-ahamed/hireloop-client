@@ -2,164 +2,124 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@heroui/react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navLinks = [
-    {
-      label: "Browse Jobs",
-      href: "/jobs",
-    },
-    {
-      label: "Company",
-      href: "/company",
-    },
-    {
-      label: "Pricing",
-      href: "/pricing",
-    },
+  const navigationLinks = [
+    { label: "Browse Jobs", href: "/jobs" },
+    { label: "Company", href: "/company" },
+    { label: "Pricing", href: "/pricing" },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0B0B0F]/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* LOGO */}
-        <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br from-violet-600 to-fuchsia-500 shadow-lg">
-            <span className="text-xl font-bold text-white">P</span>
+    <nav className="w-full bg-[#0a0a0a] px-4 py-3 sticky top-0 z-50">
+      {/* Outer Pill-shaped Container */}
+      <div className="max-w-7xl mx-auto bg-[#161616] rounded-2xl border border-neutral-800/60 px-6 h-16 flex items-center justify-between">
+        
+        {/* Left Aligned: Brand / Logo */}
+        <div className="flex items-center flex-shrink-0">
+          <Link href="/" className="flex items-center gap-1 font-bold text-2xl tracking-tight select-none">
+            <span className="text-[#0088ff]">hire</span>
+            <span className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-orange-500 bg-clip-text text-transparent text-xl mx-0.5">
+              🔄
+            </span>
+            <span className="text-[#ff6600]">oop</span>
+          </Link>
+        </div>
+
+        {/* Right Aligned: Everything else grouped together */}
+        <div className="hidden md:flex items-center gap-6 ml-auto">
+          {/* Menu Options */}
+          <ul className="flex items-center gap-6">
+            {navigationLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className="text-neutral-400 hover:text-neutral-200 text-sm font-medium transition-colors"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Vertical Divider placed exactly before the Sign In link */}
+          <div className="h-5 w-[1px] bg-neutral-700/60 mx-1" />
+
+          {/* Auth Actions */}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/login"
+              className="text-[#5651f4] hover:text-[#6d69f7] text-sm font-semibold transition-colors"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/signup"
+              className="bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-transform active:scale-95 shadow-md shadow-indigo-600/10 hover:opacity-95"
+            >
+              Get Started
+            </Link>
           </div>
+        </div>
 
-          <div className="hidden leading-none sm:block">
-            <h1 className="text-lg font-bold text-white">
-              Hire Loop
-            </h1>
-          </div>
-        </Link>
-
-        {/* RIGHT SIDE */}
-        <div className="flex items-center gap-4">
-          {/* Desktop Menu */}
-          <div className="hidden items-center gap-6 md:flex">
-            {/* Nav Links */}
-            <ul className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-2">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="rounded-full px-4 py-2 text-sm font-medium text-gray-300 transition hover:bg-white/10 hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            {/* Vertical Divider */}
-            <div className="h-6 w-px bg-white/20" />
-
-            {/* Auth Links */}
-            <div className="flex items-center gap-4">
-              <Link
-                href="/auth/signin"
-                className="text-sm font-medium text-violet-400 transition hover:text-violet-300"
-              >
-                Sign In
-              </Link>
-
-              <Button
-                as={Link}
-                href="/register"
-                radius="lg"
-                className="h-11 bg-white px-6 text-sm font-semibold text-black hover:bg-gray-200"
-              >
-                Get Started
-              </Button>
-            </div>
-          </div>
-
-          {/* MOBILE MENU BUTTON */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex items-center justify-center rounded-lg p-2 text-white transition hover:bg-white/10 md:hidden"
-            aria-label="Toggle Menu"
+        {/* Mobile Hamburger Menu Button */}
+        <button
+          className="md:hidden text-neutral-400 hover:text-white focus:outline-none p-1"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+        >
+          <svg
+            className="h-6 w-6 transition-transform duration-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
             {isMenuOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             )}
-          </button>
-        </div>
+          </svg>
+        </button>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* Mobile Menu Dropdown Drawer */}
       {isMenuOpen && (
-        <div className="border-t border-white/10 bg-[#0B0B0F] md:hidden">
-          <div className="space-y-3 px-4 py-6">
-            {/* Nav Links */}
-            <ul className="space-y-2">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="block rounded-xl px-4 py-3 text-base font-medium text-gray-300 transition hover:bg-white/5 hover:text-white"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            {/* Divider */}
-            <div className="border-t border-white/10 pt-4">
-              <div className="flex flex-col gap-3">
+        <div className="md:hidden mt-2 mx-auto max-w-7xl bg-[#161616] border border-neutral-800 rounded-xl p-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150">
+          <ul className="flex flex-col gap-1">
+            {navigationLinks.map((link) => (
+              <li key={link.label}>
                 <Link
-                  href="/auth/signin"
-                  className="rounded-xl px-4 py-3 text-base font-medium text-violet-400 transition hover:bg-white/5"
+                  href={link.href}
                   onClick={() => setIsMenuOpen(false)}
+                  className="block py-2.5 px-3 text-neutral-300 hover:bg-neutral-800/50 rounded-lg text-base"
                 >
-                  Sign In
+                  {link.label}
                 </Link>
-
-                <Button
-                  as={Link}
-                  href="/register"
-                  className="bg-white font-semibold text-black"
-                  radius="lg"
-                >
-                  Get Started
-                </Button>
-              </div>
-            </div>
+              </li>
+            ))}
+          </ul>
+          
+          <div className="my-3 border-t border-neutral-800" />
+          
+          <div className="flex flex-col gap-2 p-1">
+            <Link
+              href="/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-center py-2.5 text-[#5651f4] hover:text-[#6d69f7] font-semibold text-base"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/signup"
+              onClick={() => setIsMenuOpen(false)}
+              className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium text-base shadow-md"
+            >
+              Get Started
+            </Link>
           </div>
         </div>
       )}
