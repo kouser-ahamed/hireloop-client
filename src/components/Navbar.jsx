@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,21 +15,26 @@ export default function Navbar() {
 
   return (
     <nav className="w-full bg-[#0a0a0a] px-4 py-3 sticky top-0 z-50">
-      {/* Outer Pill-shaped Container */}
+      {/* Outer Pill-shaped Container - Reference image_016d70.png */}
       <div className="max-w-7xl mx-auto bg-[#161616] rounded-2xl border border-neutral-800/60 px-6 h-16 flex items-center justify-between">
         
         {/* Left Aligned: Brand / Logo */}
-        <div className="flex items-center flex-shrink-0">
-          <Link href="/" className="flex items-center gap-1 font-bold text-2xl tracking-tight select-none">
-            <span className="text-[#0088ff]">hire</span>
-            <span className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-orange-500 bg-clip-text text-transparent text-xl mx-0.5">
-              🔄
-            </span>
-            <span className="text-[#ff6600]">oop</span>
+        <div className="flex items-center shrink-0">
+          <Link href="/" className="flex items-center select-none">
+            {/* Using Next.js Image with fixed dimensions to match image_016d70.png proportions */}
+            <div className="relative h-8 w-32"> 
+              <Image
+                src="/assets/images/logo.png"
+                alt="Hire Loop logo"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
           </Link>
         </div>
 
-        {/* Right Aligned: Everything else grouped together */}
+        {/* Right Aligned: Menu + Divider + Auth */}
         <div className="hidden md:flex items-center gap-6 ml-auto">
           {/* Menu Options */}
           <ul className="flex items-center gap-6">
@@ -44,8 +50,8 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Vertical Divider placed exactly before the Sign In link */}
-          <div className="h-5 w-[1px] bg-neutral-700/60 mx-1" />
+          {/* Vertical Divider - Visible in image_016d70.png */}
+          <div className="h-5 w-px bg-neutral-700/60 mx-1" />
 
           {/* Auth Actions */}
           <div className="flex items-center gap-4">
@@ -69,14 +75,8 @@ export default function Navbar() {
           className="md:hidden text-neutral-400 hover:text-white focus:outline-none p-1"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
-          aria-expanded={isMenuOpen}
         >
-          <svg
-            className="h-6 w-6 transition-transform duration-200"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {isMenuOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -86,9 +86,9 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown Drawer */}
+      {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div className="md:hidden mt-2 mx-auto max-w-7xl bg-[#161616] border border-neutral-800 rounded-xl p-4 shadow-xl animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="md:hidden mt-2 mx-auto max-w-7xl bg-[#161616] border border-neutral-800 rounded-xl p-4 shadow-xl">
           <ul className="flex flex-col gap-1">
             {navigationLinks.map((link) => (
               <li key={link.label}>
@@ -102,22 +102,10 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
-          
           <div className="my-3 border-t border-neutral-800" />
-          
-          <div className="flex flex-col gap-2 p-1">
-            <Link
-              href="/login"
-              onClick={() => setIsMenuOpen(false)}
-              className="text-center py-2.5 text-[#5651f4] hover:text-[#6d69f7] font-semibold text-base"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/signup"
-              onClick={() => setIsMenuOpen(false)}
-              className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium text-base shadow-md"
-            >
+          <div className="flex flex-col gap-2">
+            <Link href="/login" className="text-center py-2.5 text-[#5651f4] font-semibold">Sign In</Link>
+            <Link href="/signup" className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium">
               Get Started
             </Link>
           </div>
