@@ -33,9 +33,9 @@ export default function StatsSection() {
   ];
 
   return (
-    <section className="relative w-full bg-[#030303] text-white pt-24 sm:pt-36 lg:pt-56 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[720px] flex flex-col justify-between items-center">
+    <section className="relative w-full bg-[#030303] text-white pt-20 sm:pt-32 lg:pt-56 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[720px] md:min-h-[850px] flex flex-col justify-between items-center">
       
-      {/* Large Device Background Globe - আপনার আগের কোড অনুযায়ী লকড রাখা হয়েছে */}
+      {/* Large Device Background Globe - আপনার কোড অনুযায়ী লকড এবং নিখুঁত করা হয়েছে */}
       <div className="hidden md:absolute md:inset-x-0 md:bottom-[-6%] md:w-full md:h-[150%] pointer-events-none select-none z-0 md:flex md:justify-center md:items-end">
         <div className="relative w-full h-full">
           <div className="relative w-full container mx-auto h-full max-w-[1400px] translate-y-[6%] md:translate-y-[12%]">
@@ -55,18 +55,18 @@ export default function StatsSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent opacity-80" />
       </div>
 
-      <div className="relative z-10 container mx-auto w-full text-center flex flex-col items-center justify-between min-h-[500px] my-auto gap-10 sm:gap-16">
+      <div className="relative z-10 container mx-auto w-full text-center flex flex-col items-center justify-between min-h-[520px] md:min-h-[600px] my-auto gap-8 sm:gap-14">
         
-        {/* Core Heading Line - মোবাইলে পজিশন ঠিক করার জন্য mt-16 sm:mt-24 ব্যবহার করা হয়েছে */}
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.3] mt-16 sm:mt-24 md:mt-36 lg:mt-[380px] mb-4 px-2 sm:px-4">
+        {/* Core Heading Line - সব স্ক্রিনের জন্য মার্জিন ও লাইন-হাইট নিখুঁত ব্যালেন্স করা হয়েছে */}
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.35] mt-12 sm:mt-20 md:mt-36 lg:mt-[380px] mb-2 px-2 sm:px-4">
           Assisting over <span className="font-semibold text-white">15,000 job seekers</span> <br className="hidden sm:inline" />
           find their dream positions.
         </h2>
 
-        {/* Small Device Background Globe - আপনার ক্রপ স্টাইল অনুযায়ী লকড */}
-        <div className="relative w-full h-80 sm:h-96 md:hidden pointer-events-none select-none flex justify-center items-start -mb-16 sm:-mb-20 overflow-hidden">
+        {/* Small Device Background Globe - image_5cf2a1.png এর মাপে পারফেক্ট ক্রপ ও শ্যাডো মাস্ক */}
+        <div className="relative w-full h-72 sm:h-80 md:hidden pointer-events-none select-none flex justify-center items-start -mb-14 sm:-mb-16 overflow-hidden">
           <div className="relative w-full h-full">
-            <div className="relative w-full h-full translate-y-[30%]">
+            <div className="relative w-full h-full translate-y-[28%]">
               <div className="absolute inset-0 pointer-events-none select-none z-0">
                 <Image
                   src="/assets/images/globe.png"
@@ -74,31 +74,33 @@ export default function StatsSection() {
                   fill
                   priority
                   sizes="100vw"
-                  className="object-contain object-top opacity-100 scale-[2.6] sm:scale-[1.8]"
+                  className="object-contain object-top opacity-100 scale-[2.5] sm:scale-[1.8]"
                 />
               </div>
-              {/* নিচের অংশ পিওর ব্ল্যাকের সাথে ব্লেন্ড করার জন্য স্মুথ মাস্ক */}
-              <div className="absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-[#030303] via-[#030303]/50 to-transparent z-1" />
+              {/* গ্লোব এর নিচের পার্ট একদম পিওর ব্ল্যাকের সাথে ব্লেন্ড করার জন্য ডাবল-লেয়ার গ্রাডিয়েন্ট মাস্ক */}
+              <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-[#030303] via-[#030303]/70 to-transparent z-1" />
             </div>
           </div>
         </div>
 
-        {/* Responsive Grid Layout (Mobile 2 Columns - image_5cf2a1.png style) */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full transform translate-y-0 sm:-translate-y-6 md:translate-y-12">
+        {/* Responsive Grid Layout - মোবাইলে পারফেক্ট ২ কলাম গ্রিড যা ট্যাবলেটে এবং লার্জ স্ক্রিনে চমৎকারভাবে রেশিও মেইনটেইন করবে */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 w-full transform translate-y-0 sm:-translate-y-4 md:translate-y-12">
           {stats.map((stat) => {
             const IconComponent = stat.icon;
             return (
               <Card
                 key={stat.id}
-                className="bg-[#09090b]/85 backdrop-blur-xl border border-neutral-900/80 rounded-[18px] sm:rounded-[22px] h-[155px] sm:h-48 shadow-2xl transition-all duration-300 hover:border-neutral-800/80"
+                className="bg-[#09090b]/85 backdrop-blur-xl border border-neutral-900/80 rounded-[18px] sm:rounded-[22px] h-[150px] sm:h-48 shadow-2xl transition-all duration-300 hover:border-neutral-800/80"
                 shadow="none"
               >
-                <div className="flex flex-col items-center text-center md:items-start md:text-left justify-between p-4 sm:p-7 h-full w-full">
-                  <div className="text-neutral-400 mt-1 md:mt-0">
+                <div className="flex flex-col items-center text-center md:items-start md:text-left justify-between p-4.5 sm:p-7 h-full w-full">
+                  {/* Icon Unit */}
+                  <div className="text-neutral-400 mt-0.5 md:mt-0">
                     <IconComponent className="w-5 h-5 md:w-6 md:h-6 stroke-[1.5]" />
                   </div>
 
-                  <div className="flex flex-col gap-0.5 sm:gap-1 mb-1 md:mb-0 md:translate-y-2">
+                  {/* Text Unit */}
+                  <div className="flex flex-col gap-0.5 sm:gap-1 mb-0.5 md:mb-0 md:translate-y-2">
                     <span className="text-2xl sm:text-[42px] font-medium tracking-tight text-white leading-none font-sans">
                       {stat.value}
                     </span>
