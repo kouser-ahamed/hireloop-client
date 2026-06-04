@@ -16,7 +16,7 @@ export default function Navbar() {
   return (
     <nav className="w-full bg-[#0a0a0a] px-4 py-3 sticky top-0 z-50">
       {/* Outer Pill-shaped Container - Reference image_016d70.png */}
-      <div className="max-w-7xl mx-auto bg-[#161616] rounded-2xl border border-neutral-800/60 px-6 h-16 flex items-center justify-between">
+      <div className="max-w-11/12 mx-auto bg-[#161616] rounded-2xl border border-neutral-800/60 px-6 h-16 flex items-center justify-between">
         
         {/* Left Aligned: Brand / Logo */}
         <div className="flex items-center shrink-0">
