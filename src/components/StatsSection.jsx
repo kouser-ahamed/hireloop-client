@@ -60,13 +60,13 @@ export default function StatsSection() {
       <div className="relative z-10 container mx-auto w-full text-center flex flex-col items-center justify-between min-h-150 my-auto gap-16">
         
         {/* Core Heading Line - ইমেজ অনুযায়ী গ্লোবের ঠিক সেন্টারে বসানো হয়েছে */}
-        <h2 className="text-[28px] md:text-4xl lg:text-[42px] font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.3] mt-20 md:mt-24 lg:mt-28 mb-6 px-4">
+        <h2 className="text-[28px] md:text-4xl lg:text-[42px] font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.3] mt-20 md:mt-24 lg:mt-95 mb-6 px-4">
           Assisting over <span className="font-semibold text-white">15,000 job seekers</span> <br className="hidden sm:inline" />
           find their dream positions.
         </h2>
 
         {/* HeroUI Cards Layout - নিচের দিক থেকে গ্লোবের কার্ভকে ওভারল্যাপ করে বসানো */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full mt-auto transform translate-y-6 md:translate-y-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full  transform translate-y-6 md:translate-y-12">
           {stats.map((stat) => {
             const IconComponent = stat.icon;
             return (
