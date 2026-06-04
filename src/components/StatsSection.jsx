@@ -64,13 +64,13 @@ export default function StatsSection() {
         </h2>
 
         {/* 
-          Small Device Background Globe - ADJUSTED HEIGHT & SCALE
-          - হাইট বাড়িয়ে h-56 করা হয়েছে যাতে ওপর থেকে ইমেজের কার্ভ কেটে না যায়।
-          - translate-y-[18%] এবং object-top দিয়ে গ্লোবের মাথা ও গ্লো লাইনটি স্পষ্ট ফুটিয়ে তোলা হয়েছে।
+          Small Device Background Globe - INCREASED HEIGHT FOR TOP CROP
+          - হাইট বাড়িয়ে h-80 করা হয়েছে যাতে ডিভাইসে উপরের অংশ কেটে যায় (কাটা ইফেক্ট)।
+          - translate-y-[30%] এবং object-top দিয়ে উপরের অংশ ক্রপ করা হয়েছে।
         */}
-        <div className="relative w-full h-56 sm:h-64 md:hidden pointer-events-none select-none flex justify-center items-start -mb-16 sm:-mb-20">
+        <div className="relative w-full h-80 sm:h-96 md:hidden pointer-events-none select-none flex justify-center items-start -mb-16 sm:-mb-20 overflow-hidden">
           <div className="relative w-full h-full">
-            <div className="relative w-full h-full translate-y-[18%]">
+            <div className="relative w-full h-full translate-y-[30%]">
               <div className="absolute inset-0 pointer-events-none select-none z-0">
                 <Image
                   src="/assets/images/globe.png"
@@ -78,7 +78,7 @@ export default function StatsSection() {
                   fill
                   priority
                   sizes="100vw"
-                  className="object-contain object-top opacity-100 scale-[2.2] sm:scale-[1.6]"
+                  className="object-contain object-top opacity-100 scale-[2.6] sm:scale-[1.8]"
                 />
               </div>
               {/* নিচের অংশ পিওর ব্ল্যাকের সাথে ব্লেন্ড করার জন্য স্মুথ মাস্ক */}
