@@ -106,7 +106,7 @@ export default function Footer() {
 
           {/* Copyright & Policy Links */}
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 text-neutral-600 text-[13px]">
-            <p>Copyright 2026 — Programming Hero</p>
+            <p>Copyright 2026 — HireLoop</p>
             <div className="flex items-center gap-2">
               <Link href="/terms" className="hover:text-neutral-400 transition-colors">Terms & Policy</Link>
               <span>-</span>
