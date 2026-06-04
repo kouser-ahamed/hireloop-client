@@ -82,7 +82,7 @@ export default function StatsSection() {
                   </div>
 
                   {/* Bottom: Stat Content */}
-                  <div className="flex flex-col gap-2 text-left">
+                  <div className="flex flex-col gap-2 text-left translate-y-1 md:translate-y-2">
                     <span className="text-[42px] font-medium tracking-tight text-white leading-none font-sans">
                       {stat.value}
                     </span>
