@@ -36,9 +36,9 @@ export default function StatsSection() {
     <section className="relative w-full bg-[#030303] text-white pt-40 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-205 flex flex-col justify-between items-center">
       
       {/* Background Globe Wrapper - Scale barano hoyeche boro dekhajabar jonno */}
-        <div className="absolute inset-x-0 bottom-[-5%] w-full h-[120%] pointer-events-none select-none z-0 flex justify-center items-end">
+        <div className="absolute inset-x-0 bottom-[-8%] w-full h-[150%] pointer-events-none select-none z-0 flex justify-center items-end">
           <div className="relative w-full h-full">
-            <div className="relative w-full container mx-auto h-full translate-y-[8%] md:translate-y-[12%]">
+            <div className="relative w-full container mx-auto h-full translate-y-[12%] md:translate-y-[18%]">
               <div className="absolute inset-0 pointer-events-none select-none z-0">
                 <Image
                   src="/assets/images/globe.png"
@@ -46,7 +46,7 @@ export default function StatsSection() {
                   fill
                   priority
                   sizes="100vw"
-                  className="object-cover object-center opacity-90"
+                  className="object-cover object-center opacity-95 scale-110 md:scale-125"
                 />
               </div>
             </div>
