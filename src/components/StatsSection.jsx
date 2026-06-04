@@ -36,26 +36,28 @@ export default function StatsSection() {
     <section className="relative w-full bg-[#030303] text-white pt-40 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-205 flex flex-col justify-between items-center">
       
       {/* Background Globe Wrapper - Scale barano hoyeche boro dekhajabar jonno */}
-      <div className="absolute inset-x-0 bottom-[-5%] max-w-11/12 mx-auto h-[120%] pointer-events-none select-none z-0 flex justify-center items-end">
-        <div className="relative w-full h-full max-w-350 aspect-16/10 md:aspect-video translate-y-[8%] md:translate-y-[12%]">
-            <div className="absolute inset-0 pointer-events-none select-none z-0">
-              <Image
-                src="/assets/images/globe.png"
-                alt="Globe background graphic"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-center opacity-90"
-              />
+        <div className="absolute inset-x-0 bottom-[-5%] w-full h-[120%] pointer-events-none select-none z-0 flex justify-center items-end">
+          <div className="relative w-full h-full">
+            <div className="relative w-full container mx-auto h-full translate-y-[8%] md:translate-y-[12%]">
+              <div className="absolute inset-0 pointer-events-none select-none z-0">
+                <Image
+                  src="/assets/images/globe.png"
+                  alt="Globe background graphic"
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-cover object-center opacity-90"
+                />
+              </div>
             </div>
-        </div>
+          </div>
         {/* Strict Top and Bottom Mask - Jate uporer background full deep black blend hoye jay */}
         <div className="absolute inset-x-0 top-0 h-[40%] bg-linear-to-b from-[#030303] via-[#030303]/60 to-transparent z-1" />
         <div className="absolute inset-0 bg-linear-to-t from-[#030303] via-transparent to-transparent opacity-80" />
       </div>
 
       {/* Main Content Layer */}
-      <div className="relative z-10 max-w-11/12 mx-auto w-full text-center flex flex-col items-center justify-between h-full flex-1 gap-24 md:gap-32">
+      <div className="relative z-10 container mx-auto w-full text-center flex flex-col items-center justify-between h-full flex-1 gap-24 md:gap-32">
         
         {/* Core Heading Line - Placed higher up just like the screenshot */}
         <h2 className="text-2xl md:text-4xl lg:text-[40px] font-medium tracking-tight text-neutral-200/90 max-w-3xl leading-[1.3] mt-25">
