@@ -33,9 +33,9 @@ export default function StatsSection() {
   ];
 
   return (
-    <section className="relative w-full bg-[#030303] text-white pt-56 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-205 flex flex-col justify-between items-center">
+    <section className="relative w-full bg-[#030303] text-white pt-24 sm:pt-36 lg:pt-56 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-205 flex flex-col justify-between items-center">
       
-      <div className="absolute inset-x-0 bottom-[-6%] w-full h-[150%] pointer-events-none select-none z-0 flex justify-center items-end">
+      <div className="hidden md:absolute md:inset-x-0 md:bottom-[-6%] md:w-full md:h-[150%] pointer-events-none select-none z-0 md:flex md:justify-center md:items-end">
         <div className="relative w-full h-full">
           <div className="relative w-full container mx-auto h-full max-w-350 translate-y-[6%] md:translate-y-[12%]">
             <div className="absolute inset-0 pointer-events-none select-none z-0">
@@ -54,26 +54,43 @@ export default function StatsSection() {
         <div className="absolute inset-0 bg-linear-to-t from-[#030303] via-transparent to-transparent opacity-80" />
       </div>
       <div className="relative z-10 container mx-auto w-full text-center flex flex-col items-center justify-between min-h-150 my-auto gap-16">
-        <h2 className="text-2xl md:text-zxl lg:text-4xl font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.3] mt-28 md:mt-36 lg:mt-[380px] mb-6 px-4">
+        <h2 className="text-2xl md:text-zxl lg:text-4xl font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.2] mt-6 md:mt-36 lg:mt-[380px] mb-4 px-4">
           Assisting over <span className="font-semibold text-white">15,000 job seekers</span> <br className="hidden sm:inline" />
           find their dream positions.
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full  transform translate-y-6 md:translate-y-12">
+
+        <div className="relative w-full h-36 md:hidden pointer-events-none select-none flex justify-center items-end">
+          <div className="relative w-full h-full">
+            <div className="relative w-full container mx-auto h-full max-w-350 translate-y-[6%]">
+              <div className="absolute inset-0 pointer-events-none select-none z-0">
+                <Image
+                  src="/assets/images/globe.png"
+                  alt="Globe background graphic"
+                  fill
+                  priority
+                  sizes="100vw"
+                  className="object-contain object-center opacity-95 scale-100"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full transform translate-y-0 sm:-translate-y-6 md:translate-y-12">
           {stats.map((stat) => {
             const IconComponent = stat.icon;
             return (
               <Card
                 key={stat.id}
-                className="bg-[#09090b]/85 backdrop-blur-xl border border-neutral-900/80 rounded-[22px] h-48 shadow-2xl transition-all duration-300 hover:border-neutral-800/80"
+                className="bg-[#09090b]/85 backdrop-blur-xl border border-neutral-900/80 rounded-[18px] sm:rounded-[22px] h-auto sm:h-48 shadow-2xl transition-all duration-300 hover:border-neutral-800/80"
                 shadow="none"
               >
-                <div className="flex flex-col items-start justify-between p-7 h-full w-full">
+                <div className="flex flex-col items-start justify-between p-5 sm:p-7 h-full w-full">
                   <div className="text-neutral-400">
-                    <IconComponent className="w-5 h-5 stroke-[1.5]" />
+                    <IconComponent className="w-5 h-5 md:w-6 md:h-6 stroke-[1.5]" />
                   </div>
 
-                  <div className="flex flex-col gap-2 text-left translate-y-1 md:translate-y-2">
-                    <span className="text-[42px] font-medium tracking-tight text-white leading-none font-sans">
+                  <div className="flex flex-col gap-1 text-left translate-y-0 md:translate-y-2">
+                    <span className="text-3xl sm:text-[42px] font-medium tracking-tight text-white leading-none font-sans">
                       {stat.value}
                     </span>
                     <span className="text-neutral-500 text-xs md:text-[13px] font-normal tracking-wide pl-0.5">
