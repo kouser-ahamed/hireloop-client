@@ -35,7 +35,7 @@ export default function StatsSection() {
   return (
     <section className="relative w-full bg-[#030303] text-white pt-24 sm:pt-36 lg:pt-56 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[720px] flex flex-col justify-between items-center">
       
-      {/* Large Device Background Globe - আপনার আগের কোড অনুযায়ী লকড রাখা হয়েছে */}
+      {/* Large Device Background Globe - আপনার আগের কোড অনুযায়ী লকড রাখা হয়েছে */}
       <div className="hidden md:absolute md:inset-x-0 md:bottom-[-6%] md:w-full md:h-[150%] pointer-events-none select-none z-0 md:flex md:justify-center md:items-end">
         <div className="relative w-full h-full">
           <div className="relative w-full container mx-auto h-full max-w-[1400px] translate-y-[6%] md:translate-y-[12%]">
@@ -57,17 +57,13 @@ export default function StatsSection() {
 
       <div className="relative z-10 container mx-auto w-full text-center flex flex-col items-center justify-between min-h-[500px] my-auto gap-10 sm:gap-16">
         
-        {/* Core Heading Line */}
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.3] mt-6 md:mt-36 lg:mt-[380px] mb-4 px-2 sm:px-4">
+        {/* Core Heading Line - মোবাইলে পজিশন ঠিক করার জন্য mt-16 sm:mt-24 ব্যবহার করা হয়েছে */}
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight text-neutral-200/90 max-w-3xl leading-[1.3] mt-16 sm:mt-24 md:mt-36 lg:mt-[380px] mb-4 px-2 sm:px-4">
           Assisting over <span className="font-semibold text-white">15,000 job seekers</span> <br className="hidden sm:inline" />
           find their dream positions.
         </h2>
 
-        {/* 
-          Small Device Background Globe - INCREASED HEIGHT FOR TOP CROP
-          - হাইট বাড়িয়ে h-80 করা হয়েছে যাতে ডিভাইসে উপরের অংশ কেটে যায় (কাটা ইফেক্ট)।
-          - translate-y-[30%] এবং object-top দিয়ে উপরের অংশ ক্রপ করা হয়েছে।
-        */}
+        {/* Small Device Background Globe - আপনার ক্রপ স্টাইল অনুযায়ী লকড */}
         <div className="relative w-full h-80 sm:h-96 md:hidden pointer-events-none select-none flex justify-center items-start -mb-16 sm:-mb-20 overflow-hidden">
           <div className="relative w-full h-full">
             <div className="relative w-full h-full translate-y-[30%]">
