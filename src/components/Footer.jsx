@@ -40,7 +40,7 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-[#0a0a0a] text-neutral-400 text-sm py-16 px-6 border-t border-neutral-900/50">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-11/12 mx-auto">
         
         {/* Top Section: Branding & Links */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16">
