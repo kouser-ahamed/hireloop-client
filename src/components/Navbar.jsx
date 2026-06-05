@@ -56,13 +56,13 @@ export default function Navbar() {
           {/* Auth Actions */}
           <div className="flex items-center gap-4">
             <Link
-              href="/login"
+              href="/auth/signin"
               className="text-[#5651f4] hover:text-[#6d69f7] text-sm font-semibold transition-colors"
             >
               Sign In
             </Link>
             <Link
-              href="/signup"
+              href="/auth/signup"
               className="bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-transform active:scale-95 shadow-md shadow-indigo-600/10 hover:opacity-95"
             >
               Get Started
@@ -104,8 +104,8 @@ export default function Navbar() {
           </ul>
           <div className="my-3 border-t border-neutral-800" />
           <div className="flex flex-col gap-2">
-            <Link href="/login" className="text-center py-2.5 text-[#5651f4] font-semibold">Sign In</Link>
-            <Link href="/signup" className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium">
+            <Link href={"/auth/signin"} className="text-center py-2.5 text-[#5651f4] font-semibold">Sign In</Link>
+            <Link href={"/auth/signup"} className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium">
               Get Started
             </Link>
           </div>

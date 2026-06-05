@@ -1,183 +1,167 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { Check } from "@gravity-ui/icons";
+import { authClient } from "@/lib/auth-client";
+import {
+  Button,
+  Card,
+  Description,
+  FieldError,
+  Form,
+  Input,
+  Label,
+  TextField,
+} from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { Card, Button, Alert } from "@heroui/react";
-import { Person, Envelope, Lock, Eye, EyeSlash } from "@gravity-ui/icons";
-// আপনার better-auth ক্লায়েন্ট ইমপোর্ট পাথটি এখানে মিলিয়ে নিন
-import { authClient } from "@/lib/auth-client"; 
+import { GrGoogle } from "react-icons/gr";
+import Link from "next/link";
+import { useState } from "react";
+import PasswordChecklist from "@/components/PasswordChecklist";
 
-export default function SignupPage() {
+export default function SignUpPage() {
   const router = useRouter();
-  
-  // Form States
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+
+  const [message, setMessage] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [password, setPassword] = useState("");
-  
-  // UI States
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
-
-  const handleSignup = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-    setIsLoading(true);
 
-    // বেসিক ভ্যালিডেশন
-    if (!name || !email || !password) {
-      setError("Please fill in all fields.");
-      setIsLoading(false);
+    setMessage("");
+    setErrorMsg("");
+
+    const name = e.target.name.value;
+    const image = e.target.image.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const { error } = await authClient.signUp.email({
+      name,
+      image,
+      email,
+      password,
+      autoSignIn: true,
+    });
+
+    if (error) {
+      setErrorMsg(error.message || "Registration failed!");
       return;
     }
 
-    try {
-      const { data, error: authError } = await authClient.signUp.email({
-        email,
-        password,
-        name,
-        callbackURL: "/dashboard", // সফল সাইন-আপের পর যেখানে রিডাইরেক্ট হবে
-      });
+    await authClient.signOut();
 
-      if (authError) {
-        setError(authError.message || "Something went wrong during signup.");
-      } else {
-        setSuccess("Account created successfully! Redirecting...");
-        // ফর্ম ক্লিয়ার করা
-        setName("");
-        setEmail("");
+    setMessage("Registration successful..!");
+
+        e.target.reset();
         setPassword("");
-        
-        // ২ সেকেন্ড পর ড্যাশবোর্ড বা হোম পেজে রিডাইরেক্ট
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 2000);
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+
+    setTimeout(() => {
+      router.push("/login");
+    }, 1500);
+  };
+
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#030303] flex items-center justify-center px-4 overflow-hidden">
+    <div className="w-full px-4 sm:px-6 lg:px-8 mt-4 sm:mt-6 lg:mt-4 flex justify-center mb-10">
       
-      {/* Background Decorative Glow */}
-      <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-150 h-75 bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
-
-      <Card className="w-full max-w-md bg-[#09090b]/80 backdrop-blur-xl border border-neutral-900/80 p-6 sm:p-8 rounded-[24px] shadow-2xl relative z-10">
+      <Card className="border w-full max-w-md sm:max-w-lg py-6 sm:py-8 md:py-10 px-4 sm:px-6 rounded-xl shadow-sm">
         
-        {/* Header */}
-        <div className="flex flex-col gap-1 mb-6 text-center">
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
-            Create an Account
-          </h1>
-          <p className="text-sm text-neutral-400">
-            Enter your details to get started
-          </p>
-        </div>
+        <h1 className="text-center text-lg sm:text-2xl font-bold mb-4 bg-linear-to-r from-emerald-600 via-emerald-500 to-lime-500 bg-clip-text text-transparent">
+          Registration Page
+        </h1>
 
-        {/* Dynamic Alerts */}
-        <div className="flex flex-col gap-3 mb-4">
-          {error && (
-            <Alert color="danger" variant="flat" title={error} />
-          )}
-          {success && (
-            <Alert color="success" variant="flat" title={success} />
-          )}
-        </div>
+        {message && (
+          <div className="mb-4 p-3 rounded-md bg-green-100 text-green-700 text-xs sm:text-sm text-center">
+            {message}
+          </div>
+        )}
 
-        {/* Signup Form */}
-        <form onSubmit={handleSignup} className="flex flex-col gap-4">
+        {errorMsg && (
+          <div className="mb-4 p-3 rounded-md bg-red-100 text-red-700 text-xs sm:text-sm text-center">
+            {errorMsg}
+          </div>
+        )}
+
+        <Form
+          className="flex flex-col gap-4"
+          onSubmit={onSubmit}
+          onReset={() => {
+            setPassword("");
+            setMessage("");
+            setErrorMsg("");
+          }}
+        >
           
-          {/* Full Name Input */}
-          <div className="flex flex-col gap-2">
-            <label className="px-1 text-sm text-neutral-400">Full Name</label>
-            <div className="relative w-full">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 pointer-events-none text-neutral-500">
-                <Person className="w-4 h-4" />
-              </div>
-              <input
-                type="text"
-                placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="h-14 w-full rounded-xl border border-neutral-800 bg-transparent pl-11 pr-4 text-white outline-none transition-colors placeholder:text-neutral-600 hover:border-neutral-700 focus:border-neutral-600"
-              />
-            </div>
-          </div>
+          <TextField isRequired name="name">
+            <Label className="text-sm sm:text-base">Name</Label>
+            <Input placeholder="Enter your name" className="h-10 sm:h-11 text-sm" />
+            <FieldError />
+          </TextField>
 
-          {/* Email Address Input */}
-          <div className="flex flex-col gap-2">
-            <label className="px-1 text-sm text-neutral-400">Email Address</label>
-            <div className="relative w-full">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 pointer-events-none text-neutral-500">
-                <Envelope className="w-4 h-4" />
-              </div>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-14 w-full rounded-xl border border-neutral-800 bg-transparent pl-11 pr-4 text-white outline-none transition-colors placeholder:text-neutral-600 hover:border-neutral-700 focus:border-neutral-600"
-              />
-            </div>
-          </div>
+          <TextField isRequired name="image">
+            <Label className="text-sm sm:text-base">Image URL</Label>
+            <Input placeholder="Image URL" className="h-10 sm:h-11 text-sm" />
+            <FieldError />
+          </TextField>
 
-          {/* Password Input */}
-          <div className="flex flex-col gap-2">
-            <label className="px-1 text-sm text-neutral-400">Password</label>
-            <div className="relative w-full">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 pointer-events-none text-neutral-500">
-                <Lock className="w-4 h-4" />
-              </div>
-              <input
-                type={isVisible ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="h-14 w-full rounded-xl border border-neutral-800 bg-transparent pl-11 pr-12 text-white outline-none transition-colors placeholder:text-neutral-600 hover:border-neutral-700 focus:border-neutral-600"
-              />
-              <button 
-                type="button" 
-                onClick={toggleVisibility} 
-                className="absolute right-4 top-1/2 z-20 -translate-y-1/2 focus:outline-none text-neutral-500 hover:text-neutral-400"
-              >
-                {isVisible ? (
-                  <EyeSlash className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
-              </button>
-            </div>
+          <TextField isRequired name="email">
+            <Label className="text-sm sm:text-base">Email</Label>
+            <Input placeholder="john@example.com" className="h-10 sm:h-11 text-sm" />
+            <FieldError />
+          </TextField>
+
+          <TextField isRequired name="password" type="password">
+            <Label className="text-sm sm:text-base">Password</Label>
+            <Input
+              placeholder="Enter password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="h-10 sm:h-11 text-sm"
+            />
+            <PasswordChecklist password={password} />
+            <FieldError />
+          </TextField>
+
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button type="submit" className="w-full h-10 sm:h-11 text-sm bg-linear-to-r from-emerald-600 via-emerald-500 to-lime-500 text-white font-semibold shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/25">
+              <Check />
+              Register
+            </Button>
+
+            <Button type="reset" variant="secondary" className="w-full h-10 sm:h-11 text-sm">
+              Reset
+            </Button>
           </div>
+        </Form>
+
+        <div className="mt-6 flex flex-col items-center gap-4">
+          <p className="text-slate-400 text-xs sm:text-sm">Or</p>
 
           <Button
-            type="submit"
-            color="primary"
-            className="w-full font-medium h-12 rounded-xl mt-2 bg-white text-black hover:bg-neutral-200"
-            isLoading={isLoading}
+            onClick={handleGoogleSignIn}
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2 h-10 sm:h-11 text-sm border border-slate-200 bg-white/80 hover:border-emerald-200 hover:bg-emerald-50/70"
           >
-            Sign Up
+            <GrGoogle />
+            Sign in with Google
           </Button>
-        </form>
 
-        {/* Toggle to Sign In */}
-        <div className="mt-6 text-center text-sm text-neutral-400">
-          Already have an account?{" "}
-          <Link 
-            href="/signin" 
-            className="text-white font-medium hover:underline transition-all"
-          >
-            Sign In
-          </Link>
+          <p className="text-center text-xs sm:text-sm">
+            Already have an account?{" "}
+            <Link href="/login" className="text-indigo-600 font-bold">
+              Login
+            </Link>
+          </p>
         </div>
 
       </Card>
