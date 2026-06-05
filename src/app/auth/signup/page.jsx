@@ -31,16 +31,19 @@ export default function SignUpPage() {
     setMessage("");
     setErrorMsg("");
 
-    const name = e.target.name.value;
-    const image = e.target.image.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    // ফর্ম এলিমেন্ট রেফারেন্স ধরে রাখা
+    const formElement = e.target;
+
+    const name = formElement.name.value;
+    const image = formElement.image.value;
+    const email = formElement.email.value;
+    const passwordValue = formElement.password.value;
 
     const { error } = await authClient.signUp.email({
       name,
       image,
       email,
-      password,
+      password: passwordValue,
       autoSignIn: true,
     });
 
@@ -51,12 +54,13 @@ export default function SignUpPage() {
 
     await authClient.signOut();
 
+    // ১. ক্লিক করার সাথে সাথে প্রথমে মেসেজটি শো করবে
     setMessage("Registration successful..!");
 
-        e.target.reset();
-        setPassword("");
-
+    // ২. ফিল্ড ক্লিন এবং রিডাইরেক্ট ১.৫ সেকেন্ড পর একসাথে ঘটবে
     setTimeout(() => {
+      formElement.reset();
+      setPassword("");
       router.push("/auth/signin");
     }, 1500);
   };
@@ -80,18 +84,6 @@ export default function SignUpPage() {
           Registration Page
         </h1>
 
-        {message && (
-          <div className="mb-4 p-3 rounded-md bg-green-100 text-green-700 text-xs sm:text-sm text-center">
-            {message}
-          </div>
-        )}
-
-        {errorMsg && (
-          <div className="mb-4 p-3 rounded-md bg-red-100 text-red-700 text-xs sm:text-sm text-center">
-            {errorMsg}
-          </div>
-        )}
-
         <Form
           className="flex flex-col gap-4"
           onSubmit={onSubmit}
@@ -101,6 +93,18 @@ export default function SignUpPage() {
             setErrorMsg("");
           }}
         >
+          {/* সাকসেস মেসেজ */}
+          {message && (
+            <div className="w-full p-3 rounded-md bg-green-100 text-green-700 text-xs sm:text-sm text-center font-medium transition-all">
+              {message}
+            </div>
+          )}
+
+          {errorMsg && (
+            <div className="w-full p-3 rounded-md bg-red-100 text-red-700 text-xs sm:text-sm text-center font-medium transition-all">
+              {errorMsg}
+            </div>
+          )}
           
           <TextField isRequired name="name">
             <Label className="text-sm sm:text-base">Name</Label>
