@@ -57,7 +57,7 @@ export default function SignUpPage() {
         setPassword("");
 
     setTimeout(() => {
-      router.push("/login");
+      router.push("/auth/signin");
     }, 1500);
   };
 
@@ -158,7 +158,7 @@ export default function SignUpPage() {
 
           <p className="text-center text-xs sm:text-sm">
             Already have an account?{" "}
-            <Link href="/login" className="text-indigo-600 font-bold">
+            <Link href="/auth/signin" className="text-indigo-600 font-bold">
               Login
             </Link>
           </p>
