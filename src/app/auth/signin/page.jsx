@@ -10,14 +10,11 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { useRouter } from "next/navigation";
 import { GrGoogle } from "react-icons/gr";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function SignInPage() {
-  const router = useRouter();
-
   const [message, setMessage] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +39,9 @@ export default function SignInPage() {
     setIsLoading(false);
 
     if (error) {
-      setErrorMsg(error.message || "Login failed! Please check your email and password.");
+      setErrorMsg(
+        error.message || "Login failed! Please check your email and password."
+      );
       return;
     }
 
@@ -50,20 +49,24 @@ export default function SignInPage() {
 
     setTimeout(() => {
       formElement.reset();
-      router.push("/");
+
+      // Safe one-time redirect + reload
+      // Navbar user session immediately update hobe
+      window.location.replace("/");
     }, 1000);
   };
 
   const handleGoogleSignIn = async () => {
     await authClient.signIn.social({
       provider: "google",
+      callbackURL: "/",
     });
   };
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 mt-4 sm:mt-6 lg:mt-4 flex justify-center mb-10">
       <Card className="border w-full max-w-md sm:max-w-lg py-6 sm:py-8 md:py-10 px-4 sm:px-6 rounded-xl shadow-sm">
-        <h1 className="text-center text-lg sm:text-2xl font-bold bg-linear-to-r from-[#5651f4] to-[#6d69f7] bg-clip-text text-transparent">
+        <h1 className="text-center text-lg sm:text-2xl font-bold bg-gradient-to-r from-[#5651f4] to-[#6d69f7] bg-clip-text text-transparent">
           Welcome back
         </h1>
 

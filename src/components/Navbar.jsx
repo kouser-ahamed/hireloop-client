@@ -9,21 +9,18 @@ import { Button } from "@heroui/react";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // user session
   const { data: session, isPending } = useSession();
-  console.log("Session data in Navbar:", session, "Is pending:", isPending);
-
   const user = session?.user;
 
   const handleSignOut = async () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
-          console.log("User signed out successfully.");
           setIsMenuOpen(false);
 
-          // Auto redirect + reload so session updates immediately
-          window.location.href = "/auth/signin";
+          // Safe one-time redirect + reload
+          // Logout er por signin page e niye jabe
+          window.location.replace("/auth/signin");
         },
         onError: (error) => {
           console.error("Error signing out:", error);
@@ -40,9 +37,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full bg-[#0a0a0a] px-4 py-3 sticky top-0 z-50">
-      {/* Outer Pill-shaped Container */}
       <div className="max-w-[91.666667%] mx-auto bg-[#161616] rounded-2xl border border-neutral-800/60 px-6 h-16 flex items-center justify-between">
-        {/* Left Aligned: Brand / Logo */}
         <div className="flex items-center shrink-0">
           <Link href="/" className="flex items-center select-none">
             <div className="relative h-8 w-32">
@@ -57,9 +52,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Right Aligned: Menu + Divider + Auth */}
         <div className="hidden md:flex items-center gap-6 ml-auto">
-          {/* Menu Options */}
           <ul className="flex items-center gap-6">
             {navigationLinks.map((link) => (
               <li key={link.label}>
@@ -73,17 +66,15 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* Vertical Divider */}
           <div className="h-5 w-px bg-neutral-700/60 mx-1" />
 
-          {/* Auth Actions */}
           <div className="flex items-center gap-4">
             {isPending ? (
               <span className="text-neutral-500 text-sm">Loading...</span>
             ) : user ? (
               <>
                 <span className="text-neutral-200 text-sm font-medium">
-                  Hi, {user.name}!
+                  Hi, {user.name || user.email}!
                 </span>
 
                 <Button
@@ -103,7 +94,6 @@ export default function Navbar() {
               </Link>
             )}
 
-            {/* Get Started always visible, no link */}
             <button
               type="button"
               className="bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-transform active:scale-95 shadow-md shadow-indigo-600/10 hover:opacity-95 cursor-default"
@@ -112,8 +102,6 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-
-        {/* Mobile Hamburger Menu Button */}
         <button
           className="md:hidden text-neutral-400 hover:text-white focus:outline-none p-1"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -144,7 +132,6 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <div className="md:hidden mt-2 mx-auto max-w-7xl bg-[#161616] border border-neutral-800 rounded-xl p-4 shadow-xl">
           <ul className="flex flex-col gap-1">
@@ -171,7 +158,7 @@ export default function Navbar() {
             ) : user ? (
               <>
                 <span className="text-center py-2.5 text-neutral-200 font-medium">
-                  Hi, {user.name}!
+                  Hi, {user.name || user.email}!
                 </span>
 
                 <Button
@@ -192,7 +179,6 @@ export default function Navbar() {
               </Link>
             )}
 
-            {/* Get Started always visible, no link */}
             <button
               type="button"
               className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium cursor-default"
