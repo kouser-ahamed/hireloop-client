@@ -15,6 +15,7 @@ import { GrGoogle } from "react-icons/gr";
 import Link from "next/link";
 import { useState } from "react";
 import PasswordChecklist from "@/components/PasswordChecklist";
+import { Description, Radio, RadioGroup } from "@heroui/react";
 
 export default function SignUpPage() {
   const [message, setMessage] = useState("");
@@ -43,7 +44,7 @@ export default function SignUpPage() {
 
     if (!isPasswordValid) {
       setErrorMsg(
-        "Password must be at least 6 characters and include uppercase and lowercase letters."
+        "Password must be at least 6 characters and include uppercase and lowercase letters.",
       );
       setIsLoading(false);
       return;
@@ -169,6 +170,34 @@ export default function SignUpPage() {
             <PasswordChecklist password={password} />
             <FieldError />
           </TextField>
+
+          {/* Role selection (optional) */}
+          <div className="flex flex-col gap-4">
+            <Label>Subscription plan</Label>
+            <RadioGroup
+              defaultValue="pro"
+              name="plan-orientation"
+              orientation="horizontal"
+            >
+              <Radio value="seeker">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Job Seeker</Label>
+                  <Description>For side projects</Description>
+                </Radio.Content>
+              </Radio>
+              <Radio value="recruiter">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Recruiter</Label>
+                </Radio.Content>
+              </Radio>
+            </RadioGroup>
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-2">
             <Button
