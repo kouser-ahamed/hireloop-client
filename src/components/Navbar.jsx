@@ -3,9 +3,36 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession, signOut } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const router = useRouter();
+
+  // user session
+  const { data: session, isPending } = useSession();
+  console.log("Session data in Navbar:", session, "Is pending:", isPending);
+
+  const user = session?.user;
+
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          console.log("User signed out successfully.");
+          setIsMenuOpen(false);
+          router.push("/auth/signin");
+          router.refresh();
+        },
+        onError: (error) => {
+          console.error("Error signing out:", error);
+        },
+      },
+    });
+  };
 
   const navigationLinks = [
     { label: "Browse Jobs", href: "/jobs" },
@@ -16,13 +43,12 @@ export default function Navbar() {
   return (
     <nav className="w-full bg-[#0a0a0a] px-4 py-3 sticky top-0 z-50">
       {/* Outer Pill-shaped Container - Reference image_016d70.png */}
-      <div className="max-w-11/12 mx-auto bg-[#161616] rounded-2xl border border-neutral-800/60 px-6 h-16 flex items-center justify-between">
-        
+      <div className="max-w-[91.666667%] mx-auto bg-[#161616] rounded-2xl border border-neutral-800/60 px-6 h-16 flex items-center justify-between">
         {/* Left Aligned: Brand / Logo */}
         <div className="flex items-center shrink-0">
           <Link href="/" className="flex items-center select-none">
             {/* Using Next.js Image with fixed dimensions to match image_016d70.png proportions */}
-            <div className="relative h-8 w-32"> 
+            <div className="relative h-8 w-32">
               <Image
                 src="/assets/images/logo.png"
                 alt="Hire Loop logo"
@@ -55,18 +81,39 @@ export default function Navbar() {
 
           {/* Auth Actions */}
           <div className="flex items-center gap-4">
-            <Link
-              href="/auth/signin"
-              className="text-[#5651f4] hover:text-[#6d69f7] text-sm font-semibold transition-colors"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/auth/signup"
-              className="bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-transform active:scale-95 shadow-md shadow-indigo-600/10 hover:opacity-95"
-            >
-              Get Started
-            </Link>
+            {isPending ? (
+              <span className="text-neutral-500 text-sm">Loading...</span>
+            ) : user ? (
+              <>
+                <span className="text-neutral-200 text-sm font-medium">
+                  Hi, {user.name}!
+                </span>
+
+                <Button
+                  onClick={handleSignOut}
+                  variant="ghost"
+                  className="text-neutral-300 hover:text-white hover:bg-neutral-800 text-sm font-medium"
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth/signin"
+                  className="text-[#5651f4] hover:text-[#6d69f7] text-sm font-semibold transition-colors"
+                >
+                  Sign In
+                </Link>
+
+                <Link
+                  href="/auth/signup"
+                  className="bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-transform active:scale-95 shadow-md shadow-indigo-600/10 hover:opacity-95"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
@@ -76,11 +123,26 @@ export default function Navbar() {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             {isMenuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             )}
           </svg>
         </button>
@@ -102,12 +164,47 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
+
           <div className="my-3 border-t border-neutral-800" />
+
           <div className="flex flex-col gap-2">
-            <Link href={"/auth/signin"} className="text-center py-2.5 text-[#5651f4] font-semibold">Sign In</Link>
-            <Link href={"/auth/signup"} className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium">
-              Get Started
-            </Link>
+            {isPending ? (
+              <span className="text-center py-2.5 text-neutral-500 font-medium">
+                Loading...
+              </span>
+            ) : user ? (
+              <>
+                <span className="text-center py-2.5 text-neutral-200 font-medium">
+                  Hi, {user.name}!
+                </span>
+
+                <Button
+                  onClick={handleSignOut}
+                  variant="ghost"
+                  className="w-full text-center py-2.5 text-neutral-300 hover:text-white hover:bg-neutral-800 font-medium"
+                >
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/auth/signin"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-center py-2.5 text-[#5651f4] font-semibold"
+                >
+                  Sign In
+                </Link>
+
+                <Link
+                  href="/auth/signup"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-center bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white py-2.5 rounded-xl font-medium"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
