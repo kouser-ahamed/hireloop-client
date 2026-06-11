@@ -2,10 +2,10 @@ import { DashboardSidebarClient } from "@/components/dashboard/DashboardSidebarC
 
 export default function RecruiterDashboardLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-[#0b0b0c] text-white">
+    <div className="min-h-screen bg-[#0b0b0c] text-white lg:flex">
       <DashboardSidebarClient />
 
-      <main className="min-w-0 flex-1 px-5 py-6 lg:px-8">
+      <main className="min-w-0 flex-1 px-4 pb-6 pt-[156px] sm:px-5 lg:px-8 lg:py-6">
         {children}
       </main>
     </div>

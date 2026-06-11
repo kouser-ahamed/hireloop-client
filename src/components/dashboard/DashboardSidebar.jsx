@@ -144,24 +144,24 @@ export function DashboardSidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden h-screen w-[240px] shrink-0 border-r border-neutral-800 bg-[#101011] lg:block">
+      <aside className="hidden h-screen w-[240px] shrink-0 border-r border-neutral-800 bg-[#101011] lg:sticky lg:top-0 lg:block">
         {navContent}
       </aside>
 
-      {/* Mobile Sidebar */}
-      <div className="lg:hidden">
+      {/* Mobile Sidebar Button - navbar er niche */}
+      <div className="fixed left-4 top-[96px] z-40 lg:hidden">
         <Drawer>
           <Button
-            className="m-3 border border-neutral-800 bg-[#161616] text-white"
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-neutral-800 bg-[#161616] px-3 text-sm font-medium text-white shadow-lg shadow-black/30 hover:bg-[#202022]"
             variant="secondary"
           >
             <LayoutSideContentLeft className="h-4 w-4" />
-            Sidebar
+            Menu
           </Button>
 
           <Drawer.Backdrop>
             <Drawer.Content placement="left">
-              <Drawer.Dialog className="w-[260px] bg-[#101011] p-0">
+              <Drawer.Dialog className="h-screen w-[260px] bg-[#101011] p-0 shadow-2xl shadow-black/60">
                 <Drawer.CloseTrigger />
                 <Drawer.Body className="p-0">{navContent}</Drawer.Body>
               </Drawer.Dialog>
