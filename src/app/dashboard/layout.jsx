@@ -1,13 +1,13 @@
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
-import React from "react";
 
-const DashboardLayout = ({ children }) => {
+export default function RecruiterDashboardLayout({ children }) {
   return (
-    <div className="flex min-h-screen">
-        <DashboardSidebar />
-      <div className="flex-1">{children}</div>
+    <div className="flex min-h-screen bg-[#0b0b0c] text-white">
+      <DashboardSidebar />
+
+      <main className="min-w-0 flex-1 px-5 py-6 lg:px-8">
+        {children}
+      </main>
     </div>
   );
-};
-
-export default DashboardLayout;
+}
