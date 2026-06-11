@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   LayoutSideContentLeft,
   Gear,
@@ -19,13 +18,7 @@ export function DashboardSidebar() {
   const pathname = usePathname();
   const { data: session, isPending } = useSession();
 
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const user = mounted && !isPending ? session?.user : null;
+  const user = session?.user;
 
   const navItems = [
     {
@@ -75,7 +68,7 @@ export function DashboardSidebar() {
       <div className="px-6 py-6">
         <div className="flex items-center gap-3 rounded-2xl border border-neutral-800 bg-[#171719] p-3">
           <div className="relative h-11 w-11 overflow-hidden rounded-full border border-neutral-700 bg-neutral-800">
-            {user?.image ? (
+            {!isPending && user?.image ? (
               <Image
                 src={user.image}
                 alt={user?.name || "User profile"}
@@ -85,14 +78,14 @@ export function DashboardSidebar() {
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-neutral-300">
-                {user?.name?.charAt(0) || "U"}
+                {!isPending ? user?.name?.charAt(0) || "U" : "U"}
               </div>
             )}
           </div>
 
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold leading-tight text-white">
-              {mounted && !isPending ? user?.name || "User" : "Loading..."}
+              {isPending ? "Loading..." : user?.name || "User"}
             </p>
 
             <p className="mt-1 text-xs leading-tight text-neutral-400">
