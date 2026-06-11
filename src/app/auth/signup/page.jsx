@@ -5,39 +5,49 @@ import { authClient } from "@/lib/auth-client";
 import {
   Button,
   Card,
-  Description,
   FieldError,
   Form,
   Input,
   Label,
   TextField,
 } from "@heroui/react";
-import { useRouter } from "next/navigation";
 import { GrGoogle } from "react-icons/gr";
 import Link from "next/link";
 import { useState } from "react";
 import PasswordChecklist from "@/components/PasswordChecklist";
 
 export default function SignUpPage() {
-  const router = useRouter();
-
   const [message, setMessage] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     setMessage("");
     setErrorMsg("");
+    setIsLoading(true);
 
-    // ফর্ম এলিমেন্ট রেফারেন্স ধরে রাখা
     const formElement = e.target;
 
-    const name = formElement.name.value;
-    const image = formElement.image.value;
-    const email = formElement.email.value;
+    const name = formElement.name.value.trim();
+    const image = formElement.image.value.trim();
+    const email = formElement.email.value.trim();
     const passwordValue = formElement.password.value;
+
+    const isPasswordValid =
+      passwordValue.length >= 6 &&
+      /[A-Z]/.test(passwordValue) &&
+      /[a-z]/.test(passwordValue);
+
+    if (!isPasswordValid) {
+      setErrorMsg(
+        "Password must be at least 6 characters and include uppercase and lowercase letters."
+      );
+      setIsLoading(false);
+      return;
+    }
 
     const { error } = await authClient.signUp.email({
       name,
@@ -49,25 +59,28 @@ export default function SignUpPage() {
 
     if (error) {
       setErrorMsg(error.message || "Registration failed!");
+      setIsLoading(false);
       return;
     }
 
     await authClient.signOut();
 
-    // ১. ক্লিক করার সাথে সাথে প্রথমে মেসেজটি শো করবে
     setMessage("Registration successful..!");
 
-    // ২. ফিল্ড ক্লিন এবং রিডাইরেক্ট ১.৫ সেকেন্ড পর একসাথে ঘটবে
     setTimeout(() => {
       formElement.reset();
       setPassword("");
-      router.push("/auth/signin");
+      setIsLoading(false);
+
+      // Safe one-time redirect + reload
+      window.location.replace("/auth/signin");
     }, 1500);
   };
 
   const handleGoogleSignUp = async () => {
     await authClient.signUp.social({
       provider: "google",
+      callbackURL: "/",
     });
   };
 
@@ -93,9 +106,9 @@ export default function SignUpPage() {
             setPassword("");
             setMessage("");
             setErrorMsg("");
+            setIsLoading(false);
           }}
         >
-          {/* সাকসেস মেসেজ */}
           {message && (
             <div className="w-full p-3 rounded-md bg-[#151f17] border border-green-800/50 text-green-400 text-xs sm:text-sm text-center font-medium transition-all">
               {message}
@@ -119,7 +132,7 @@ export default function SignUpPage() {
             <FieldError />
           </TextField>
 
-          <TextField isRequired name="image">
+          <TextField name="image">
             <Label className="text-sm sm:text-base text-neutral-300">
               Image URL
             </Label>
@@ -135,17 +148,19 @@ export default function SignUpPage() {
               Email
             </Label>
             <Input
+              type="email"
               placeholder="john@example.com"
               className="h-10 sm:h-11 text-sm bg-[#0f0f10] text-white border border-neutral-800 placeholder:text-neutral-500"
             />
             <FieldError />
           </TextField>
 
-          <TextField isRequired name="password" type="password">
+          <TextField isRequired name="password">
             <Label className="text-sm sm:text-base text-neutral-300">
               Password
             </Label>
             <Input
+              type="password"
               placeholder="Enter password"
               value={password}
               onChange={handlePasswordChange}
@@ -158,16 +173,18 @@ export default function SignUpPage() {
           <div className="flex flex-col sm:flex-row gap-2">
             <Button
               type="submit"
-              className="w-full h-10 sm:h-11 text-sm bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white font-semibold shadow-md shadow-indigo-600/20 hover:shadow-lg hover:shadow-indigo-600/25 hover:opacity-95"
+              disabled={isLoading}
+              className="w-full h-10 sm:h-11 text-sm bg-gradient-to-r from-[#5651f4] to-[#6d69f7] text-white font-semibold shadow-md shadow-indigo-600/20 hover:shadow-lg hover:shadow-indigo-600/25 hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <Check />
-              Sign Up
+              {isLoading ? "Signing Up..." : "Sign Up"}
             </Button>
 
             <Button
               type="reset"
               variant="secondary"
-              className="w-full h-10 sm:h-11 text-sm bg-neutral-900 text-neutral-300 border border-neutral-800 hover:bg-neutral-800"
+              disabled={isLoading}
+              className="w-full h-10 sm:h-11 text-sm bg-neutral-900 text-neutral-300 border border-neutral-800 hover:bg-neutral-800 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               Reset
             </Button>
@@ -188,7 +205,10 @@ export default function SignUpPage() {
 
           <p className="text-center text-xs sm:text-sm text-neutral-400">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-[#5651f4] font-bold hover:text-[#6d69f7]">
+            <Link
+              href="/auth/signin"
+              className="text-[#5651f4] font-bold hover:text-[#6d69f7]"
+            >
               Login
             </Link>
           </p>
