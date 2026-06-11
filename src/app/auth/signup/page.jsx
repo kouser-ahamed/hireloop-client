@@ -22,6 +22,7 @@ export default function SignUpPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState("seeker");
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +55,7 @@ export default function SignUpPage() {
       name,
       image,
       email,
+      role,
       password: passwordValue,
       autoSignIn: true,
     });
@@ -173,19 +175,19 @@ export default function SignUpPage() {
 
           {/* Role selection (optional) */}
           <div className="flex flex-col gap-4">
-            <Label>Subscription plan</Label>
+            <Label>Role</Label>
             <RadioGroup
-              defaultValue="pro"
-              name="plan-orientation"
+              defaultValue="seeker"
+              name="role"
+              onChnage={(value) => setRole(value)}
               orientation="horizontal"
             >
-              <Radio value="seeker">
+              <Radio selected value="seeker">
                 <Radio.Control>
                   <Radio.Indicator />
                 </Radio.Control>
                 <Radio.Content>
                   <Label>Job Seeker</Label>
-                  <Description>For side projects</Description>
                 </Radio.Content>
               </Radio>
               <Radio value="recruiter">
