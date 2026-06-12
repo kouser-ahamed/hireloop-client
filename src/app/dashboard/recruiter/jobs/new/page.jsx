@@ -15,6 +15,7 @@ import {
 } from "@heroui/react";
 import { Briefcase, Check, House, ArrowDown } from "@gravity-ui/icons";
 import { createJob } from "@/lib/actions/jobs";
+import { redirect } from "next/navigation";
 
 const jobCategories = [
   { id: "technology", name: "Technology" },
@@ -131,6 +132,7 @@ export default function PostJobPage() {
       toast.error("Something went wrong while posting the job.");
     } finally {
       setIsSubmitting(false);
+      redirect("/dashboard/recruiter");
     }
   };
 
