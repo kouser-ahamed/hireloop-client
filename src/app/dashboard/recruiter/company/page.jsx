@@ -11,6 +11,7 @@ import {
   Label,
   TextArea,
   TextField,
+  toast,
 } from "@heroui/react";
 import {
   ArrowDown,
@@ -19,6 +20,7 @@ import {
   House,
   PencilToSquare,
 } from "@gravity-ui/icons";
+import { createCompany } from "@/lib/actions/companies";
 
 const industries = [
   { id: "technology", name: "Technology" },
@@ -195,7 +197,11 @@ export default function CompanyPage({ companyData }) {
       status: company?.status || "pending",
     };
 
-    console.log("Company payload:", companyPayload);
+    const payload = await createCompany(companyPayload);
+    if(payload.insertedId) {
+      toast.success("Company registered successfully! Awaiting admin approval.");
+
+    }
     
 
     setCompany(companyPayload);
