@@ -56,3 +56,20 @@ export const serverMutation = async (path, data) => {
 
   return JSON.parse(text);
 };
+
+
+export const serverPatch = async (path, data) => {
+  const res = await fetch(`${baseUrl}${path}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const text = await res.text();
+
+  if (!text) return null;
+
+  return JSON.parse(text);
+};

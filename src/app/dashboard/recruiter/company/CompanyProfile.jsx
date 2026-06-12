@@ -20,7 +20,7 @@ import {
   House,
   PencilToSquare,
 } from "@gravity-ui/icons";
-import { createCompany } from "@/lib/actions/companies";
+import { createCompany, updateCompany } from "@/lib/actions/companies";
 
 const industries = [
   { id: "technology", name: "Technology" },
@@ -174,47 +174,77 @@ export default function CompanyProfile({ recruiter, companyData }) {
     return "warning";
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!industry || !employeeCount) {
+  //     alert("Please select industry and employee count range.");
+  //     return;
+  //   }
+
+  //   if (isLogoUploading) {
+  //     alert("Please wait, logo is still uploading.");
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+
+  //   const uploadedLogoUrl = logoPreview || company?.logoUrl || "";
+
+  //   const companyPayload = {
+  //     companyName,
+  //     websiteUrl,
+  //     industry,
+  //     location,
+  //     employeeCount,
+  //     logoUrl: uploadedLogoUrl,
+  //     description,
+  //     status: company?.status || "pending",
+  //     recruiterId: recruiter?.id,
+  //   };
+
+  //   const payload = await createCompany(companyPayload);
+
+  //   if (payload?.insertedId) {
+  //     toast.success("Company registered successfully! Awaiting admin approval.");
+  //   }
+
+  //   setCompany(companyPayload);
+  //   setIsSubmitting(false);
+  //   setIsFormOpen(false);
+  //   setIsEditing(false);
+  //   setLogoFile(null);
+  // };
+
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  setIsSubmitting(true);
 
-    if (!industry || !employeeCount) {
-      alert("Please select industry and employee count range.");
-      return;
-    }
-
-    if (isLogoUploading) {
-      alert("Please wait, logo is still uploading.");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    const uploadedLogoUrl = logoPreview || company?.logoUrl || "";
-
-    const companyPayload = {
-      companyName,
-      websiteUrl,
-      industry,
-      location,
-      employeeCount,
-      logoUrl: uploadedLogoUrl,
-      description,
-      status: company?.status || "pending",
-      recruiterId: recruiter?.id,
-    };
-
-    const payload = await createCompany(companyPayload);
-
-    if (payload?.insertedId) {
-      toast.success("Company registered successfully! Awaiting admin approval.");
-    }
-
-    setCompany(companyPayload);
-    setIsSubmitting(false);
-    setIsFormOpen(false);
-    setIsEditing(false);
-    setLogoFile(null);
+  const companyPayload = {
+    companyName,
+    websiteUrl,
+    industry,
+    location,
+    employeeCount,
+    logoUrl: logoPreview,
+    description,
+    status: company?.status || "pending",
+    recruiterId: recruiter?.id,
   };
+
+  if (isEditing && company?._id) {
+    await updateCompany(company._id, companyPayload); // EDIT: PATCH call
+  } else {
+    const res = await createCompany(companyPayload); // NEW
+    companyPayload._id = res.insertedId;
+  }
+
+  setCompany(companyPayload);
+  setIsFormOpen(false);
+  setIsEditing(false);
+  setIsSubmitting(false);
+};
 
   if (!company && !isFormOpen) {
     return (
