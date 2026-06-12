@@ -126,10 +126,6 @@ export default function CompanyPage({ companyData }) {
 
     setIsSubmitting(true);
 
-    // TODO:
-    // 1. Upload logoFile to imgdb/imgbb.
-    // 2. Get uploaded logo URL.
-    // 3. Save that URL in your database.
     const uploadedLogoUrl = logoPreview || company?.logoUrl || "";
 
     const companyPayload = {
@@ -154,307 +150,378 @@ export default function CompanyPage({ companyData }) {
 
   if (!company && !isFormOpen) {
     return (
-      <div className="flex min-h-[70vh] w-full items-center justify-center px-4 py-10">
-        <div className="mx-auto flex max-w-md flex-col items-center text-center">
-          <div className="relative mb-8">
-            <div className="h-32 w-32 rotate-[-3deg] rounded-3xl border border-neutral-800 bg-[#171719] shadow-2xl shadow-black/40" />
-            <div className="absolute -right-3 -top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-xl">
-              <Briefcase className="h-5 w-5" />
-            </div>
+      <div className="min-h-screen w-full bg-[#0b0b0c] px-4 py-5 sm:px-6 lg:px-8">
+        <div className="mb-8 flex flex-col gap-4 border-b border-neutral-800 pb-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+              My Company
+            </h1>
+            <p className="mt-1 text-sm text-neutral-400">
+              Register and manage your company profile.
+            </p>
           </div>
 
-          <h1 className="text-xl font-semibold text-white">
-            Company not registered yet
-          </h1>
-
-          <p className="mt-3 max-w-sm text-sm leading-6 text-neutral-500">
-            Set up your business profile to start posting high-performance job
-            listings and manage your talent loop.
-          </p>
-
-          <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button
-              onClick={openRegisterForm}
-              className="h-11 rounded-xl bg-white px-7 text-sm font-bold text-black hover:bg-neutral-200"
-            >
-              Register your company
-            </Button>
-
-            <Button
-              variant="ghost"
-              className="h-11 rounded-xl border border-neutral-800 bg-[#181818] px-7 text-sm font-semibold text-neutral-300 hover:bg-neutral-800 hover:text-white"
-            >
-              View FAQ
-            </Button>
+          <div className="hidden rounded-full border border-neutral-800 bg-[#111113] px-4 py-2 text-xs text-neutral-500 sm:block">
+            Recruiter Workspace
           </div>
-
-          <p className="mt-10 text-xs text-neutral-600">
-            Need specialized assistance? Contact our enterprise support team.
-          </p>
         </div>
+
+        <div className="flex min-h-[calc(100vh-160px)] w-full items-center justify-center">
+          <div className="relative mx-auto flex w-full max-w-md flex-col items-center overflow-hidden rounded-[28px] border border-neutral-800 bg-[#111113] px-6 py-10 text-center shadow-2xl shadow-black/50 sm:px-10">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/[0.04] to-transparent" />
+
+            <div className="relative mb-8">
+              <div className="h-36 w-36 rotate-[-4deg] rounded-[28px] border border-neutral-800 bg-[#171719] shadow-2xl shadow-black/50">
+                <div className="mx-auto mt-8 h-20 w-24 rounded-xl bg-[#2a2a2d] p-3 opacity-70">
+                  <div className="mb-3 h-6 w-6 rounded-md bg-neutral-600/60" />
+                  <div className="mb-2 h-2 w-14 rounded bg-neutral-600/60" />
+                  <div className="mb-2 h-2 w-20 rounded bg-neutral-600/60" />
+                  <div className="h-2 w-16 rounded bg-neutral-600/60" />
+                </div>
+              </div>
+
+              <div className="absolute -right-3 -top-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-xl">
+                <Briefcase className="h-5 w-5" />
+              </div>
+            </div>
+
+            <h1 className="text-xl font-semibold text-white sm:text-2xl">
+              Company not registered yet
+            </h1>
+
+            <p className="mt-3 max-w-sm text-sm leading-6 text-neutral-400">
+              Set up your business profile to start posting high-performance job
+              listings and manage your talent loop.
+            </p>
+
+            <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
+              <Button
+                onClick={openRegisterForm}
+                className="h-12 rounded-xl bg-white px-7 text-sm font-bold text-black shadow-lg shadow-white/5 hover:bg-neutral-200"
+              >
+                Register your company
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="h-12 rounded-xl border border-neutral-800 bg-[#181818] px-7 text-sm font-semibold text-neutral-300 hover:bg-neutral-800 hover:text-white"
+              >
+                View FAQ
+              </Button>
+            </div>
+
+            <p className="mt-10 text-xs text-neutral-600">
+              Need specialized assistance? Contact our enterprise support team.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-8 border-t border-neutral-800" />
       </div>
     );
   }
 
   if (company && !isFormOpen) {
     return (
-      <div className="flex w-full justify-center px-4 py-6 sm:px-6 lg:px-8">
-        <div className="w-full max-w-4xl overflow-hidden rounded-2xl border border-neutral-800 bg-[#111113] shadow-2xl shadow-black/40">
-          <div className="flex flex-col gap-4 border-b border-neutral-800 px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-            <div>
-              <h1 className="text-2xl font-semibold text-white">
-                Company Profile
-              </h1>
-              <p className="mt-1 text-sm text-neutral-400">
-                Manage your registered company information.
-              </p>
-            </div>
+      <div className="flex w-full flex-col bg-[#0b0b0c] px-4 py-6 sm:px-6 lg:px-8">
+        <div className="mb-8 flex flex-col gap-4 border-b border-neutral-800 pb-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+              My Company
+            </h1>
+            <p className="mt-1 text-sm text-neutral-400">
+              Register and manage your company profile.
+            </p>
+          </div>
 
-            <div className="flex items-center gap-3">
-              <Chip
-                color={getStatusColor(company.status)}
-                size="sm"
-                variant="soft"
-                className="capitalize"
-              >
-                {company.status}
-              </Chip>
+          <Chip
+            color={getStatusColor(company.status)}
+            size="sm"
+            variant="soft"
+            className="w-fit capitalize"
+          >
+            {company.status}
+          </Chip>
+        </div>
+
+        <div className="flex w-full justify-center">
+          <div className="w-full max-w-5xl overflow-hidden rounded-[28px] border border-neutral-800 bg-[#111113] shadow-2xl shadow-black/50">
+            <div className="flex flex-col gap-4 border-b border-neutral-800 bg-[#151517] px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+              <div>
+                <h1 className="text-2xl font-semibold text-white">
+                  Company Profile
+                </h1>
+                <p className="mt-1 text-sm text-neutral-400">
+                  Manage your registered company information.
+                </p>
+              </div>
 
               <Button
                 onClick={openEditForm}
-                className="h-10 rounded-xl border border-neutral-800 bg-[#181818] px-4 text-sm font-semibold text-neutral-200 hover:bg-neutral-800"
+                className="h-10 w-fit rounded-xl border border-neutral-800 bg-[#1d1d1f] px-4 text-sm font-semibold text-neutral-200 hover:bg-neutral-800"
               >
                 <PencilToSquare className="h-4 w-4" />
-                Edit
+                Edit Profile
               </Button>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 gap-5 px-6 py-6 sm:px-8 md:grid-cols-[180px_1fr]">
-            <div className="flex justify-center md:justify-start">
-              <div className="h-32 w-32 overflow-hidden rounded-2xl border border-neutral-800 bg-black">
-                {company.logoUrl ? (
-                  <img
-                    src={company.logoUrl}
-                    alt={company.companyName}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-neutral-500">
-                    <Briefcase className="h-8 w-8" />
-                  </div>
-                )}
+            <div className="grid grid-cols-1 gap-6 px-6 py-6 sm:px-8 md:grid-cols-[190px_1fr]">
+              <div className="flex justify-center md:justify-start">
+                <div className="h-36 w-36 overflow-hidden rounded-3xl border border-neutral-800 bg-black shadow-xl shadow-black/40">
+                  {company.logoUrl ? (
+                    <img
+                      src={company.logoUrl}
+                      alt={company.companyName}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-neutral-500">
+                      <Briefcase className="h-9 w-9" />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <InfoCard label="Company Name" value={company.companyName} />
-              <InfoCard label="Industry" value={company.industry} />
-              <InfoCard label="Website URL" value={company.websiteUrl} />
-              <InfoCard label="Location" value={company.location} />
-              <InfoCard label="Employees" value={company.employeeCount} />
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <InfoCard label="Company Name" value={company.companyName} />
+                <InfoCard label="Industry" value={company.industry} />
+                <InfoCard label="Website URL" value={company.websiteUrl} />
+                <InfoCard label="Location" value={company.location} />
+                <InfoCard label="Employees" value={company.employeeCount} />
 
-              <div className="rounded-xl border border-neutral-800 bg-black px-4 py-3 sm:col-span-2">
-                <p className="text-xs text-neutral-500">Description</p>
-                <p className="mt-1 text-sm leading-6 text-neutral-300">
-                  {company.description || "No description added."}
-                </p>
+                <div className="rounded-2xl border border-neutral-800 bg-black px-4 py-4 sm:col-span-2">
+                  <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+                    Description
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-neutral-300">
+                    {company.description || "No description added."}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div className="mt-8 border-t border-neutral-800" />
       </div>
     );
   }
 
   return (
-    <div className="flex w-full justify-center px-4 py-6 sm:px-6 lg:px-8">
-      <div className="w-full max-w-[720px] overflow-hidden rounded-2xl border border-neutral-800 bg-[#111113] shadow-2xl shadow-black/50">
-        <div className="flex items-start justify-between border-b border-neutral-800 px-6 py-6 sm:px-8">
-          <div>
-            <h1 className="text-xl font-semibold text-white">
-              {isEditing ? "Edit Company" : "Register New Company"}
-            </h1>
-
-            <p className="mt-1 text-sm text-neutral-400">
-              Enter your business details to start hiring on HireLoop.
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={closeForm}
-            className="text-2xl leading-none text-neutral-400 hover:text-white"
-          >
-            ×
-          </button>
+    <div className="flex w-full flex-col bg-[#0b0b0c] px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mb-8 flex flex-col gap-4 border-b border-neutral-800 pb-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            My Company
+          </h1>
+          <p className="mt-1 text-sm text-neutral-400">
+            Register and manage your company profile.
+          </p>
         </div>
 
-        <Form
-          ref={formRef}
-          onSubmit={handleSubmit}
-          validationBehavior="aria"
-          className="flex flex-col"
-        >
-          <div className="px-6 py-7 sm:px-8">
-            <Fieldset className="border-0 p-0">
-              <div className="grid grid-cols-1 gap-x-7 gap-y-6 md:grid-cols-2">
-                <TextField isRequired name="companyName" className="w-full">
-                  <Label className="mb-2 block text-sm font-semibold text-neutral-300">
-                    Company Name
-                  </Label>
-                  <Input
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="e.g. Acme Corp"
-                    className="h-[48px] rounded-lg border border-neutral-800 bg-[#1d1d1f] px-4 text-sm text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
-                  />
-                  <FieldError className="mt-1 text-xs text-red-400" />
-                </TextField>
+        <div className="hidden rounded-full border border-neutral-800 bg-[#111113] px-4 py-2 text-xs text-neutral-500 sm:block">
+          {isEditing ? "Editing company" : "New registration"}
+        </div>
+      </div>
 
-                <DarkSelect
-                  label="Industry / Category"
-                  name="industry"
-                  placeholder="Select industry"
-                  items={industries}
-                  selectedKey={industry}
-                  onChange={setIndustry}
-                />
-
-                <TextField isRequired name="websiteUrl" className="w-full">
-                  <Label className="mb-2 block text-sm font-semibold text-neutral-300">
-                    Website URL
-                  </Label>
-                  <Input
-                    value={websiteUrl}
-                    onChange={(e) => setWebsiteUrl(e.target.value)}
-                    placeholder="https://www.company.com"
-                    className="h-[48px] rounded-lg border border-neutral-800 bg-[#1d1d1f] px-4 text-sm text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
-                  />
-                  <FieldError className="mt-1 text-xs text-red-400" />
-                </TextField>
-
-                <TextField isRequired name="location" className="w-full">
-                  <Label className="mb-2 block text-sm font-semibold text-neutral-300">
-                    Location
-                  </Label>
-
-                  <div className="relative">
-                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">
-                      <House className="h-4 w-4" />
-                    </span>
-
-                    <Input
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="City, Country"
-                      className="h-[48px] rounded-lg border border-neutral-800 bg-[#1d1d1f] px-11 text-sm text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
-                    />
-                  </div>
-
-                  <FieldError className="mt-1 text-xs text-red-400" />
-                </TextField>
-
-                <DarkSelect
-                  label="Employee Count Range"
-                  name="employeeCount"
-                  placeholder="Select range"
-                  items={employeeRanges}
-                  selectedKey={employeeCount}
-                  onChange={setEmployeeCount}
-                />
-
-                <div>
-                  <Label className="mb-2 block text-sm font-semibold text-neutral-300">
-                    Company Logo
-                  </Label>
-
-                  <div className="flex items-center gap-4">
-                    <label className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-lg border border-dashed border-neutral-700 bg-[#1d1d1f] text-neutral-400 hover:border-neutral-500 hover:text-white">
-                      <Briefcase className="h-5 w-5" />
-                      <input
-                        type="file"
-                        accept="image/png,image/jpeg,image/jpg"
-                        onChange={handleLogoChange}
-                        className="hidden"
-                      />
-                    </label>
-
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-white">
-                        Upload image
-                      </p>
-                      <p className="text-xs text-neutral-500">
-                        PNG, JPG up to 5MB
-                      </p>
-                    </div>
-
-                    {logoPreview && (
-                      <img
-                        src={logoPreview}
-                        alt="Logo preview"
-                        className="ml-auto h-12 w-12 rounded-lg border border-neutral-800 object-cover"
-                      />
-                    )}
-                  </div>
+      <div className="flex min-h-[60vh] w-full items-center justify-center">
+        <div className="w-full max-w-[780px] overflow-hidden rounded-[28px] border border-neutral-800 bg-[#111113] shadow-2xl shadow-black/60">
+          <div className="border-b border-neutral-800 bg-[#151517] px-6 py-6 sm:px-8">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-black shadow-lg shadow-white/5">
+                  <Briefcase className="h-5 w-5" />
                 </div>
 
-                <TextField name="description" className="md:col-span-2">
-                  <Label className="mb-2 block text-sm font-semibold text-neutral-300">
-                    Brief Description
-                  </Label>
+                <h1 className="text-xl font-semibold text-white">
+                  {isEditing ? "Edit Company" : "Register New Company"}
+                </h1>
 
-                  <TextArea
-                    rows={5}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Tell us about your company's mission and culture..."
-                    className="min-h-[120px] resize-y rounded-lg border border-neutral-800 bg-[#1d1d1f] px-4 py-4 text-sm leading-6 text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
-                  />
-
-                  <FieldError className="mt-1 text-xs text-red-400" />
-                </TextField>
+                <p className="mt-1 text-sm text-neutral-400">
+                  Enter your business details to start hiring on HireLoop.
+                </p>
               </div>
-            </Fieldset>
-          </div>
 
-          <div className="border-t border-neutral-800 bg-[#1c1c1e] px-6 py-5 sm:px-8">
-            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-              <Button
+              <button
                 type="button"
                 onClick={closeForm}
-                variant="ghost"
-                className="h-11 rounded-xl border border-neutral-800 px-7 text-sm font-semibold text-neutral-300 hover:bg-neutral-800 hover:text-white"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-800 bg-[#1d1d1f] text-xl leading-none text-neutral-400 hover:bg-neutral-800 hover:text-white"
               >
-                Cancel
-              </Button>
-
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="h-11 rounded-xl bg-white px-8 text-sm font-bold text-black hover:bg-neutral-200 disabled:opacity-60"
-              >
-                {isSubmitting
-                  ? isEditing
-                    ? "Updating..."
-                    : "Registering..."
-                  : isEditing
-                  ? "Update Company"
-                  : "Register Company"}
-              </Button>
+                ×
+              </button>
             </div>
           </div>
-        </Form>
+
+          <Form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            validationBehavior="aria"
+            className="flex flex-col"
+          >
+            <div className="max-h-[70vh] overflow-y-auto px-6 py-7 sm:px-8">
+              <Fieldset className="border-0 p-0">
+                <div className="grid grid-cols-1 gap-x-7 gap-y-6 md:grid-cols-2">
+                  <TextField isRequired name="companyName" className="w-full">
+                    <Label className="mb-2 block text-sm font-semibold text-neutral-300">
+                      Company Name
+                    </Label>
+                    <Input
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      placeholder="e.g. Acme Corp"
+                      className="h-[50px] rounded-xl border border-neutral-800 bg-[#1d1d1f] px-4 text-sm text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
+                    />
+                    <FieldError className="mt-1 text-xs text-red-400" />
+                  </TextField>
+
+                  <DarkSelect
+                    label="Industry / Category"
+                    name="industry"
+                    placeholder="Select industry"
+                    items={industries}
+                    selectedKey={industry}
+                    onChange={setIndustry}
+                  />
+
+                  <TextField isRequired name="websiteUrl" className="w-full">
+                    <Label className="mb-2 block text-sm font-semibold text-neutral-300">
+                      Website URL
+                    </Label>
+                    <Input
+                      value={websiteUrl}
+                      onChange={(e) => setWebsiteUrl(e.target.value)}
+                      placeholder="https://www.company.com"
+                      className="h-[50px] rounded-xl border border-neutral-800 bg-[#1d1d1f] px-4 text-sm text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
+                    />
+                    <FieldError className="mt-1 text-xs text-red-400" />
+                  </TextField>
+
+                  <TextField isRequired name="location" className="w-full">
+                    <Label className="mb-2 block text-sm font-semibold text-neutral-300">
+                      Location
+                    </Label>
+
+                    <div className="relative">
+                      <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500">
+                        <House className="h-4 w-4" />
+                      </span>
+
+                      <Input
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        placeholder="City, Country"
+                        className="h-[50px] rounded-xl border border-neutral-800 bg-[#1d1d1f] px-11 text-sm text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
+                      />
+                    </div>
+
+                    <FieldError className="mt-1 text-xs text-red-400" />
+                  </TextField>
+
+                  <DarkSelect
+                    label="Employee Count Range"
+                    name="employeeCount"
+                    placeholder="Select range"
+                    items={employeeRanges}
+                    selectedKey={employeeCount}
+                    onChange={setEmployeeCount}
+                  />
+
+                  <div>
+                    <Label className="mb-2 block text-sm font-semibold text-neutral-300">
+                      Company Logo
+                    </Label>
+
+                    <div className="flex items-center gap-4 rounded-2xl border border-neutral-800 bg-[#1d1d1f] p-3">
+                      <label className="flex h-14 w-14 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-dashed border-neutral-700 bg-black text-neutral-400 hover:border-neutral-500 hover:text-white">
+                        <Briefcase className="h-5 w-5" />
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/jpg"
+                          onChange={handleLogoChange}
+                          className="hidden"
+                        />
+                      </label>
+
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-white">
+                          Upload image
+                        </p>
+                        <p className="text-xs text-neutral-500">
+                          PNG, JPG up to 5MB
+                        </p>
+                      </div>
+
+                      {logoPreview && (
+                        <img
+                          src={logoPreview}
+                          alt="Logo preview"
+                          className="ml-auto h-12 w-12 rounded-xl border border-neutral-800 object-cover"
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  <TextField name="description" className="md:col-span-2">
+                    <Label className="mb-2 block text-sm font-semibold text-neutral-300">
+                      Brief Description
+                    </Label>
+
+                    <TextArea
+                      rows={5}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      placeholder="Tell us about your company's mission and culture..."
+                      className="min-h-[130px] resize-y rounded-xl border border-neutral-800 bg-[#1d1d1f] px-4 py-4 text-sm leading-6 text-white outline-none placeholder:text-neutral-600 focus:border-neutral-600"
+                    />
+
+                    <FieldError className="mt-1 text-xs text-red-400" />
+                  </TextField>
+                </div>
+              </Fieldset>
+            </div>
+
+            <div className="border-t border-neutral-800 bg-[#1c1c1e] px-6 py-5 sm:px-8">
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <Button
+                  type="button"
+                  onClick={closeForm}
+                  variant="ghost"
+                  className="h-11 rounded-xl border border-neutral-800 px-7 text-sm font-semibold text-neutral-300 hover:bg-neutral-800 hover:text-white"
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="h-11 rounded-xl bg-white px-8 text-sm font-bold text-black shadow-lg shadow-white/5 hover:bg-neutral-200 disabled:opacity-60"
+                >
+                  {isSubmitting
+                    ? isEditing
+                      ? "Updating..."
+                      : "Registering..."
+                    : isEditing
+                    ? "Update Company"
+                    : "Register Company"}
+                </Button>
+              </div>
+            </div>
+          </Form>
+        </div>
       </div>
+
+      <div className="mt-8 border-t border-neutral-800" />
     </div>
   );
 }
 
 function InfoCard({ label, value }) {
   return (
-    <div className="rounded-xl border border-neutral-800 bg-black px-4 py-3">
-      <p className="text-xs text-neutral-500">{label}</p>
-      <p className="mt-1 truncate text-sm font-medium text-neutral-200">
+    <div className="rounded-2xl border border-neutral-800 bg-black px-4 py-4 transition hover:border-neutral-700">
+      <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+        {label}
+      </p>
+      <p className="mt-2 truncate text-sm font-medium text-neutral-200">
         {value || "N/A"}
       </p>
     </div>
@@ -499,7 +566,7 @@ function DarkSelect({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-[48px] w-full items-center justify-between rounded-lg border border-neutral-800 bg-[#1d1d1f] px-4 text-left text-sm text-white outline-none hover:bg-[#222224] focus:border-neutral-600"
+        className="flex h-[50px] w-full items-center justify-between rounded-xl border border-neutral-800 bg-[#1d1d1f] px-4 text-left text-sm text-white outline-none hover:bg-[#222224] focus:border-neutral-600"
       >
         <span className={selectedItem ? "text-white" : "text-neutral-500"}>
           {selectedItem ? selectedItem.name : placeholder}
@@ -513,7 +580,7 @@ function DarkSelect({
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-[calc(100%+8px)] z-50 w-full rounded-xl border border-neutral-800 bg-[#1d1d1f] p-1 shadow-2xl shadow-black/40">
+        <div className="absolute left-0 top-[calc(100%+8px)] z-50 w-full rounded-2xl border border-neutral-800 bg-[#1d1d1f] p-1 shadow-2xl shadow-black/40">
           {items.map((item) => {
             const isSelected = selectedKey === item.id;
 
@@ -525,7 +592,7 @@ function DarkSelect({
                   onChange(item.id);
                   setIsOpen(false);
                 }}
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm hover:bg-neutral-800 ${
+                className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-neutral-800 ${
                   isSelected ? "bg-neutral-800 text-white" : "text-neutral-300"
                 }`}
               >
