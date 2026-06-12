@@ -9,103 +9,229 @@ const RecruiterJobsPage = async () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-white">Manage Jobs</h1>
-        <p className="mt-1 text-sm text-neutral-400">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-semibold tracking-tight text-white">
+          Manage All Jobs
+        </h1>
+        <p className="text-sm text-neutral-400">
           View, edit, and manage your company job posts.
         </p>
       </div>
 
-      <Table variant="secondary">
-        <Table.ResizableContainer>
-          <Table.Content aria-label="Company jobs" className="min-w-[760px]">
-            <Table.Header>
-              <Table.Column isRowHeader defaultWidth="1fr" id="jobTitle" minWidth={180}>
-                Job Title
-                <Table.ColumnResizer />
-              </Table.Column>
+      {/* Mobile Card View */}
+      <div className="grid gap-4 md:hidden">
+        {jobs?.map((job) => {
+          const jobId = job?._id?.$oid || job?._id;
 
-              <Table.Column defaultWidth="1fr" id="jobCategory" minWidth={140}>
-                Category
-                <Table.ColumnResizer />
-              </Table.Column>
+          return (
+            <div
+              key={jobId}
+              className="rounded-2xl border border-neutral-800 bg-[#111113] p-4 shadow-lg shadow-black/20"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h2 className="truncate text-base font-semibold text-white">
+                    {job.jobTitle}
+                  </h2>
+                  <p className="mt-1 text-xs capitalize text-neutral-500">
+                    {job.jobCategory} • {job.jobType}
+                  </p>
+                </div>
 
-              <Table.Column defaultWidth="1fr" id="jobType" minWidth={130}>
-                Type
-                <Table.ColumnResizer />
-              </Table.Column>
+                <Chip
+                  color={job.status === "active" ? "success" : "warning"}
+                  size="sm"
+                  variant="soft"
+                  className="capitalize"
+                >
+                  {job.status}
+                </Chip>
+              </div>
 
-              <Table.Column defaultWidth="1fr" id="location" minWidth={200}>
-                Location
-                <Table.ColumnResizer />
-              </Table.Column>
+              <div className="mt-4 rounded-xl border border-neutral-800 bg-black/70 px-3 py-2">
+                <p className="text-xs text-neutral-500">Location</p>
+                <p className="mt-1 truncate text-sm text-neutral-300">
+                  {job.isRemote ? "Remote" : job.location}
+                </p>
+              </div>
 
-              <Table.Column defaultWidth="1fr" id="status" minWidth={120}>
-                Status
-                <Table.ColumnResizer />
-              </Table.Column>
+              <div className="mt-4 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  title="View Details"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-800 bg-black text-neutral-300 transition hover:bg-neutral-900 hover:text-white"
+                >
+                  <Eye className="h-4 w-4" />
+                </button>
 
-              <Table.Column defaultWidth="1fr" id="actions" minWidth={130}>
-                Actions
-              </Table.Column>
-            </Table.Header>
+                <button
+                  type="button"
+                  title="Edit Job"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-800 bg-black text-neutral-300 transition hover:bg-neutral-900 hover:text-white"
+                >
+                  <PencilToSquare className="h-4 w-4" />
+                </button>
 
-            <Table.Body>
-              {jobs?.map((job) => {
-                const jobId = job?._id?.$oid || job?._id;
+                <button
+                  type="button"
+                  title="Delete Job"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-red-900/50 bg-red-950/20 text-red-400 transition hover:bg-red-950/40 hover:text-red-300"
+                >
+                  <TrashBin className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-                return (
-                  <Table.Row key={jobId}>
-                    <Table.Cell>{job.jobTitle}</Table.Cell>
-                    <Table.Cell className="capitalize">{job.jobCategory}</Table.Cell>
-                    <Table.Cell className="capitalize">{job.jobType}</Table.Cell>
-                    <Table.Cell>
-                      {job.isRemote ? "Remote" : job.location}
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Chip
-                        color={job.status === "active" ? "success" : "warning"}
-                        size="sm"
-                        variant="soft"
-                        className="capitalize"
-                      >
-                        {job.status}
-                      </Chip>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          title="View Details"
-                          className="rounded-lg border border-neutral-800 bg-[#181818] p-2 text-neutral-300 transition hover:bg-neutral-800 hover:text-white"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
+      {/* Tablet/Desktop Table View */}
+      <div className="hidden overflow-hidden rounded-2xl border border-neutral-800 bg-[#111113] shadow-xl shadow-black/20 md:block">
+        <Table variant="secondary">
+          <Table.ResizableContainer>
+            <Table.Content aria-label="Company jobs" className="w-full">
+              <Table.Header>
+                <Table.Column
+                  isRowHeader
+                  defaultWidth="1.4fr"
+                  id="jobTitle"
+                  minWidth={160}
+                  className="bg-[#111113] text-neutral-300"
+                >
+                  Job Title
+                  <Table.ColumnResizer />
+                </Table.Column>
 
-                        <button
-                          type="button"
-                          title="Edit Job"
-                          className="rounded-lg border border-neutral-800 bg-[#181818] p-2 text-neutral-300 transition hover:bg-neutral-800 hover:text-white"
-                        >
-                          <PencilToSquare className="h-4 w-4" />
-                        </button>
+                <Table.Column
+                  defaultWidth="0.9fr"
+                  id="jobCategory"
+                  minWidth={110}
+                  className="bg-[#111113] text-neutral-300"
+                >
+                  Category
+                  <Table.ColumnResizer />
+                </Table.Column>
 
-                        <button
-                          type="button"
-                          title="Delete Job"
-                          className="rounded-lg border border-red-900/50 bg-red-950/20 p-2 text-red-400 transition hover:bg-red-950/40 hover:text-red-300"
-                        >
-                          <TrashBin className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table.Content>
-        </Table.ResizableContainer>
-      </Table>
+                <Table.Column
+                  defaultWidth="0.9fr"
+                  id="jobType"
+                  minWidth={100}
+                  className="bg-[#111113] text-neutral-300"
+                >
+                  Type
+                  <Table.ColumnResizer />
+                </Table.Column>
+
+                <Table.Column
+                  defaultWidth="1.3fr"
+                  id="location"
+                  minWidth={150}
+                  className="bg-[#111113] text-neutral-300"
+                >
+                  Location
+                  <Table.ColumnResizer />
+                </Table.Column>
+
+                <Table.Column
+                  defaultWidth="0.8fr"
+                  id="status"
+                  minWidth={95}
+                  className="bg-[#111113] text-neutral-300"
+                >
+                  Status
+                  <Table.ColumnResizer />
+                </Table.Column>
+
+                <Table.Column
+                  defaultWidth="0.9fr"
+                  id="actions"
+                  minWidth={120}
+                  className="bg-[#111113] text-neutral-300"
+                >
+                  Actions
+                </Table.Column>
+              </Table.Header>
+
+              <Table.Body>
+                {jobs?.map((job) => {
+                  const jobId = job?._id?.$oid || job?._id;
+
+                  return (
+                    <Table.Row key={jobId}>
+                      <Table.Cell>
+                        <span className="block max-w-[220px] truncate rounded-xl border border-neutral-900 bg-black px-3 py-2 font-medium text-white">
+                          {job.jobTitle}
+                        </span>
+                      </Table.Cell>
+
+                      <Table.Cell>
+                        <span className="block rounded-xl border border-neutral-900 bg-black px-3 py-2 capitalize text-neutral-300">
+                          {job.jobCategory}
+                        </span>
+                      </Table.Cell>
+
+                      <Table.Cell>
+                        <span className="block rounded-xl border border-neutral-900 bg-black px-3 py-2 capitalize text-neutral-300">
+                          {job.jobType}
+                        </span>
+                      </Table.Cell>
+
+                      <Table.Cell>
+                        <span className="block max-w-[220px] truncate rounded-xl border border-neutral-900 bg-black px-3 py-2 text-neutral-300">
+                          {job.isRemote ? "Remote" : job.location}
+                        </span>
+                      </Table.Cell>
+
+                      <Table.Cell>
+                        <div className="rounded-xl border border-neutral-900 bg-black px-3 py-2">
+                          <Chip
+                            color={
+                              job.status === "active" ? "success" : "warning"
+                            }
+                            size="sm"
+                            variant="soft"
+                            className="capitalize"
+                          >
+                            {job.status}
+                          </Chip>
+                        </div>
+                      </Table.Cell>
+
+                      <Table.Cell>
+                        <div className="flex items-center gap-2 rounded-xl border border-neutral-900 bg-black px-3 py-2">
+                          <button
+                            type="button"
+                            title="View Details"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-neutral-800 bg-[#111113] text-neutral-300 transition hover:bg-neutral-800 hover:text-white"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </button>
+
+                          <button
+                            type="button"
+                            title="Edit Job"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-neutral-800 bg-[#111113] text-neutral-300 transition hover:bg-neutral-800 hover:text-white"
+                          >
+                            <PencilToSquare className="h-4 w-4" />
+                          </button>
+
+                          <button
+                            type="button"
+                            title="Delete Job"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-red-900/50 bg-red-950/20 text-red-400 transition hover:bg-red-950/40 hover:text-red-300"
+                          >
+                            <TrashBin className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table.Content>
+          </Table.ResizableContainer>
+        </Table>
+      </div>
     </div>
   );
 };
