@@ -11,8 +11,10 @@ import {
   Label,
   TextArea,
   TextField,
+  toast,
 } from "@heroui/react";
 import { Briefcase, Check, House, ArrowDown } from "@gravity-ui/icons";
+import { createJob } from "@/lib/actions/jobs";
 
 const jobCategories = [
   { id: "technology", name: "Technology" },
@@ -37,6 +39,8 @@ const currencies = [
 ];
 
 export default function PostJobPage() {
+  const formRef = useRef(null);
+
   const [isRemote, setIsRemote] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -65,6 +69,13 @@ export default function PostJobPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const form = formRef.current;
+
+    if (!form) {
+      toast.error("Form not found. Please try again.");
+      return;
+    }
+
     if (!canPostJob) {
       alert("Your company is not allowed to post a new job right now.");
       return;
@@ -77,7 +88,7 @@ export default function PostJobPage() {
 
     setIsSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
 
     const jobPayload = {
       title: formData.get("jobTitle"),
@@ -101,25 +112,31 @@ export default function PostJobPage() {
       createdAt: new Date().toISOString(),
     };
 
-    console.log("New job payload:", jobPayload);
+    try {
+      const res = await createJob(jobPayload);
 
-    // Later API call:
-    // await fetch("/api/recruiter/jobs", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(jobPayload),
-    // });
+      if (res?.insertedId) {
+        toast.success("Job posted successfully!");
 
-    setTimeout(() => {
+        form.reset();
+        setIsRemote(false);
+        setJobCategory("");
+        setJobType("");
+        setCurrency("");
+      } else {
+        toast.error("Failed to post job.");
+      }
+    } catch (error) {
+      console.error("Job post error:", error);
+      toast.error("Something went wrong while posting the job.");
+    } finally {
       setIsSubmitting(false);
-      alert("Job posted successfully!");
-    }, 800);
+    }
   };
 
   return (
     <div className="w-full">
       <div className="mx-auto max-w-[960px] rounded-2xl border border-neutral-800/80 bg-[#111113] shadow-2xl shadow-black/40">
-        {/* Header */}
         <div className="px-6 py-7 sm:px-10 sm:py-9">
           <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-[28px]">
             Post a New Job
@@ -148,12 +165,12 @@ export default function PostJobPage() {
         <div className="mx-6 border-t border-neutral-800 sm:mx-10" />
 
         <Form
+          ref={formRef}
           onSubmit={handleSubmit}
           validationBehavior="aria"
           className="flex flex-col"
         >
           <div className="px-6 py-8 sm:px-10">
-            {/* Job Information */}
             <Fieldset className="border-0 p-0">
               <h2 className="text-xl font-semibold text-neutral-200">
                 Job Information
@@ -228,7 +245,7 @@ export default function PostJobPage() {
                   </div>
                 </div>
 
-                <TextField name="location" isRequired className="w-full">
+                <TextField name="location" isRequired={!isRemote} className="w-full">
                   <div className="mb-2 flex items-center justify-between">
                     <Label className="block text-sm font-semibold text-neutral-300">
                       Location
@@ -277,7 +294,6 @@ export default function PostJobPage() {
               </div>
             </Fieldset>
 
-            {/* Job Details */}
             <Fieldset className="mt-10 border-0 p-0">
               <h2 className="text-xl font-semibold text-neutral-200">
                 Job Details & Description
@@ -332,7 +348,6 @@ export default function PostJobPage() {
             </Fieldset>
           </div>
 
-          {/* Footer */}
           <div className="mx-6 border-t border-neutral-800 sm:mx-10" />
 
           <div className="flex items-center justify-end gap-4 px-6 py-6 sm:px-10">
