@@ -48,15 +48,17 @@ export default function CompanyPage({ companyData }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLogoUploading, setIsLogoUploading] = useState(false);
 
-  const [companyName, setCompanyName] = useState(companyData?.companyName || "");
+  const [companyName, setCompanyName] = useState(
+    companyData?.companyName || "",
+  );
   const [websiteUrl, setWebsiteUrl] = useState(companyData?.websiteUrl || "");
   const [industry, setIndustry] = useState(companyData?.industry || "");
   const [location, setLocation] = useState(companyData?.location || "");
   const [employeeCount, setEmployeeCount] = useState(
-    companyData?.employeeCount || ""
+    companyData?.employeeCount || "",
   );
   const [description, setDescription] = useState(
-    companyData?.description || ""
+    companyData?.description || "",
   );
   const [logoPreview, setLogoPreview] = useState(companyData?.logoUrl || "");
   const [logoFile, setLogoFile] = useState(null);
@@ -125,7 +127,9 @@ export default function CompanyPage({ companyData }) {
     const apiKey = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
 
     if (!apiKey) {
-      alert("IMGBB API key is missing. Add NEXT_PUBLIC_IMGBB_API_KEY in .env.local");
+      alert(
+        "IMGBB API key is missing. Add NEXT_PUBLIC_IMGBB_API_KEY in .env.local",
+      );
       return;
     }
 
@@ -142,7 +146,7 @@ export default function CompanyPage({ companyData }) {
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
 
       const data = await response.json();
@@ -198,7 +202,9 @@ export default function CompanyPage({ companyData }) {
     const payload = await createCompany(companyPayload);
 
     if (payload.insertedId) {
-      toast.success("Company registered successfully! Awaiting admin approval.");
+      toast.success(
+        "Company registered successfully! Awaiting admin approval.",
+      );
     }
 
     setCompany(companyPayload);
@@ -559,12 +565,12 @@ export default function CompanyPage({ companyData }) {
                   {isLogoUploading
                     ? "Uploading Logo..."
                     : isSubmitting
-                    ? isEditing
-                      ? "Updating..."
-                      : "Registering..."
-                    : isEditing
-                    ? "Update Company"
-                    : "Register Company"}
+                      ? isEditing
+                        ? "Updating..."
+                        : "Registering..."
+                      : isEditing
+                        ? "Update Company"
+                        : "Register Company"}
                 </Button>
               </div>
             </div>
@@ -577,15 +583,56 @@ export default function CompanyPage({ companyData }) {
   );
 }
 
+// function InfoCard({ label, value }) {
+//   return (
+//     <div className="rounded-2xl border border-neutral-800 bg-black px-4 py-4 transition hover:border-neutral-700">
+//       <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+//         {label}
+//       </p>
+//       <p className="mt-2 truncate text-sm font-medium text-neutral-200 capitalize">
+//         {value || "N/A"}
+//       </p>
+//     </div>
+//   );
+// }
+
 function InfoCard({ label, value }) {
+  const isStatus = label === "Status";
+
+  const getStatusStyle = (status) => {
+    switch ((status || "").toLowerCase()) {
+      case "approved":
+        return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+      case "rejected":
+        return "bg-red-500/10 text-red-400 border-red-500/20";
+      default:
+        return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+    }
+  };
+
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-black px-4 py-4 transition hover:border-neutral-700">
-      <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+    <div className="group relative overflow-hidden rounded-3xl border border-neutral-800 bg-gradient-to-br from-[#161618] to-[#101011] p-5 transition-all duration-300 hover:border-neutral-700 hover:shadow-xl hover:shadow-black/30">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
         {label}
       </p>
-      <p className="mt-2 truncate text-sm font-medium text-neutral-200 capitalize">
-        {value || "N/A"}
-      </p>
+
+      {isStatus ? (
+        <span
+          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold capitalize ${getStatusStyle(
+            value,
+          )}`}
+        >
+          {value || "pending"}
+        </span>
+      ) : (
+        <h3 className="text-base font-semibold text-white break-words">
+          {value || "N/A"}
+        </h3>
+      )}
+
+      <div className="absolute bottom-0 left-0 h-1 w-0 bg-white/20 transition-all duration-300 group-hover:w-full" />
     </div>
   );
 }
