@@ -149,7 +149,7 @@ export default function PostJobPage() {
 
         <Form
           onSubmit={handleSubmit}
-          validationBehavior="native"
+          validationBehavior="aria"
           className="flex flex-col"
         >
           <div className="px-6 py-8 sm:px-10">
@@ -228,7 +228,7 @@ export default function PostJobPage() {
                   </div>
                 </div>
 
-                <TextField name="location" className="w-full">
+                <TextField name="location" isRequired className="w-full">
                   <div className="mb-2 flex items-center justify-between">
                     <Label className="block text-sm font-semibold text-neutral-300">
                       Location
