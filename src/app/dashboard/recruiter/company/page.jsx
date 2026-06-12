@@ -44,6 +44,7 @@ export default function CompanyPage({ companyData }) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLogoUploading, setIsLogoUploading] = useState(false);
 
   const [companyName, setCompanyName] = useState(companyData?.companyName || "");
   const [websiteUrl, setWebsiteUrl] = useState(companyData?.websiteUrl || "");
@@ -67,6 +68,7 @@ export default function CompanyPage({ companyData }) {
     setDescription("");
     setLogoPreview("");
     setLogoFile(null);
+    setIsLogoUploading(false);
   };
 
   const fillFormStates = (data) => {
@@ -78,6 +80,7 @@ export default function CompanyPage({ companyData }) {
     setDescription(data?.description || "");
     setLogoPreview(data?.logoUrl || "");
     setLogoFile(null);
+    setIsLogoUploading(false);
   };
 
   const openRegisterForm = () => {
@@ -96,18 +99,64 @@ export default function CompanyPage({ companyData }) {
     setIsFormOpen(false);
     setIsEditing(false);
     setLogoFile(null);
+    setIsLogoUploading(false);
 
     if (!company) {
       resetFormStates();
     }
   };
 
-  const handleLogoChange = (e) => {
+  const handleLogoChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Logo size must be less than 5MB.");
+      return;
+    }
+
+    if (!["image/png", "image/jpeg", "image/jpg"].includes(file.type)) {
+      alert("Only PNG, JPG, and JPEG files are allowed.");
+      return;
+    }
+
+    const apiKey = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
+
+    if (!apiKey) {
+      alert("IMGBB API key is missing. Add NEXT_PUBLIC_IMGBB_API_KEY in .env.local");
+      return;
+    }
+
     setLogoFile(file);
     setLogoPreview(URL.createObjectURL(file));
+    setIsLogoUploading(true);
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch(
+        `https://api.imgbb.com/1/upload?key=${apiKey}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        alert("Logo upload failed. Please try again.");
+        return;
+      }
+
+      setLogoPreview(data.data.url);
+    } catch (error) {
+      console.error("Logo upload error:", error);
+      alert("Network error during logo upload.");
+    } finally {
+      setIsLogoUploading(false);
+    }
   };
 
   const getStatusColor = (status) => {
@@ -116,11 +165,18 @@ export default function CompanyPage({ companyData }) {
     return "warning";
   };
 
+  // For demonstration, form submission just updates local state. Replace with actual API call in production.
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!industry || !employeeCount) {
       alert("Please select industry and employee count range.");
+      return;
+    }
+
+    if (isLogoUploading) {
+      alert("Please wait, logo is still uploading.");
       return;
     }
 
@@ -140,6 +196,7 @@ export default function CompanyPage({ companyData }) {
     };
 
     console.log("Company payload:", companyPayload);
+    
 
     setCompany(companyPayload);
     setIsSubmitting(false);
@@ -444,7 +501,7 @@ export default function CompanyPage({ companyData }) {
 
                       <div className="min-w-0">
                         <p className="text-sm font-semibold text-white">
-                          Upload image
+                          {isLogoUploading ? "Uploading..." : "Upload image"}
                         </p>
                         <p className="text-xs text-neutral-500">
                           PNG, JPG up to 5MB
@@ -493,10 +550,12 @@ export default function CompanyPage({ companyData }) {
 
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isLogoUploading}
                   className="h-11 rounded-xl bg-white px-8 text-sm font-bold text-black shadow-lg shadow-white/5 hover:bg-neutral-200 disabled:opacity-60"
                 >
-                  {isSubmitting
+                  {isLogoUploading
+                    ? "Uploading Logo..."
+                    : isSubmitting
                     ? isEditing
                       ? "Updating..."
                       : "Registering..."
