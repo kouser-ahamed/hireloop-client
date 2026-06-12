@@ -39,7 +39,7 @@ const employeeRanges = [
   { id: "500+", name: "500+ employees" },
 ];
 
-export default function CompanyProfile({ recruiter, companyData, RecruiterCompanies }) {
+export default function CompanyProfile({ recruiter, companyData }) {
   const formRef = useRef(null);
 
   const [company, setCompany] = useState(companyData || null);
@@ -48,20 +48,25 @@ export default function CompanyProfile({ recruiter, companyData, RecruiterCompan
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLogoUploading, setIsLogoUploading] = useState(false);
 
-  const [companyName, setCompanyName] = useState(
-    companyData?.companyName || "",
-  );
+  const [companyName, setCompanyName] = useState(companyData?.companyName || "");
   const [websiteUrl, setWebsiteUrl] = useState(companyData?.websiteUrl || "");
   const [industry, setIndustry] = useState(companyData?.industry || "");
   const [location, setLocation] = useState(companyData?.location || "");
   const [employeeCount, setEmployeeCount] = useState(
-    companyData?.employeeCount || "",
+    companyData?.employeeCount || ""
   );
   const [description, setDescription] = useState(
-    companyData?.description || "",
+    companyData?.description || ""
   );
   const [logoPreview, setLogoPreview] = useState(companyData?.logoUrl || "");
   const [logoFile, setLogoFile] = useState(null);
+
+  useEffect(() => {
+    if (companyData) {
+      setCompany(companyData);
+      fillFormStates(companyData);
+    }
+  }, [companyData]);
 
   const resetFormStates = () => {
     setCompanyName("");
@@ -127,9 +132,7 @@ export default function CompanyProfile({ recruiter, companyData, RecruiterCompan
     const apiKey = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
 
     if (!apiKey) {
-      alert(
-        "IMGBB API key is missing. Add NEXT_PUBLIC_IMGBB_API_KEY in .env.local",
-      );
+      alert("IMGBB API key is missing.");
       return;
     }
 
@@ -146,7 +149,7 @@ export default function CompanyProfile({ recruiter, companyData, RecruiterCompan
         {
           method: "POST",
           body: formData,
-        },
+        }
       );
 
       const data = await response.json();
@@ -197,15 +200,13 @@ export default function CompanyProfile({ recruiter, companyData, RecruiterCompan
       logoUrl: uploadedLogoUrl,
       description,
       status: company?.status || "pending",
-      recruiterId: recruiter.id,
+      recruiterId: recruiter?.id,
     };
 
     const payload = await createCompany(companyPayload);
 
-    if (payload.insertedId) {
-      toast.success(
-        "Company registered successfully! Awaiting admin approval.",
-      );
+    if (payload?.insertedId) {
+      toast.success("Company registered successfully! Awaiting admin approval.");
     }
 
     setCompany(companyPayload);
@@ -307,7 +308,7 @@ export default function CompanyProfile({ recruiter, companyData, RecruiterCompan
             variant="soft"
             className="w-fit capitalize"
           >
-            {company.status}
+            {company.status || "pending"}
           </Chip>
         </div>
 
@@ -566,12 +567,12 @@ export default function CompanyProfile({ recruiter, companyData, RecruiterCompan
                   {isLogoUploading
                     ? "Uploading Logo..."
                     : isSubmitting
-                      ? isEditing
-                        ? "Updating..."
-                        : "Registering..."
-                      : isEditing
-                        ? "Update Company"
-                        : "Register Company"}
+                    ? isEditing
+                      ? "Updating..."
+                      : "Registering..."
+                    : isEditing
+                    ? "Update Company"
+                    : "Register Company"}
                 </Button>
               </div>
             </div>
@@ -583,19 +584,6 @@ export default function CompanyProfile({ recruiter, companyData, RecruiterCompan
     </div>
   );
 }
-
-// function InfoCard({ label, value }) {
-//   return (
-//     <div className="rounded-2xl border border-neutral-800 bg-black px-4 py-4 transition hover:border-neutral-700">
-//       <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
-//         {label}
-//       </p>
-//       <p className="mt-2 truncate text-sm font-medium text-neutral-200 capitalize">
-//         {value || "N/A"}
-//       </p>
-//     </div>
-//   );
-// }
 
 function InfoCard({ label, value }) {
   const isStatus = label === "Status";
@@ -622,13 +610,13 @@ function InfoCard({ label, value }) {
       {isStatus ? (
         <span
           className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold capitalize ${getStatusStyle(
-            value,
+            value
           )}`}
         >
           {value || "pending"}
         </span>
       ) : (
-        <h3 className="text-base font-semibold text-white break-words">
+        <h3 className="break-words text-base font-semibold text-white">
           {value || "N/A"}
         </h3>
       )}
