@@ -92,25 +92,25 @@ export default function PostJobPage() {
     const formData = new FormData(form);
 
     const jobPayload = {
-      title: formData.get("jobTitle"),
-      category: jobCategory,
-      type: jobType,
-      salary: {
-        min: formData.get("salaryMin"),
-        max: formData.get("salaryMax"),
-        currency,
-      },
+      jobTitle: formData.get("jobTitle"),
+      jobCategory: jobCategory,
+      jobType: jobType,
+
+      minSalary: formData.get("salaryMin"),
+      maxSalary: formData.get("salaryMax"),
+      currency: currency,
+
       location: isRemote ? "Remote" : formData.get("location"),
-      isRemote,
-      applicationDeadline: formData.get("deadline"),
+      deadline: formData.get("deadline"),
+
       responsibilities: formData.get("responsibilities"),
       requirements: formData.get("requirements"),
       benefits: formData.get("benefits"),
-      companyId: company.id,
-      companyName: company.name,
+
+      isRemote: isRemote,
+      companyId: "company_123",
       status: "active",
-      isPublic: true,
-      createdAt: new Date().toISOString(),
+      isPubliclyVisible: true,
     };
 
     try {
@@ -247,7 +247,11 @@ export default function PostJobPage() {
                   </div>
                 </div>
 
-                <TextField name="location" isRequired={!isRemote} className="w-full">
+                <TextField
+                  name="location"
+                  isRequired={!isRemote}
+                  className="w-full"
+                >
                   <div className="mb-2 flex items-center justify-between">
                     <Label className="block text-sm font-semibold text-neutral-300">
                       Location
