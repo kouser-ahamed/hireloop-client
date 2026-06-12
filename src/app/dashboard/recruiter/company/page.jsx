@@ -167,8 +167,6 @@ export default function CompanyPage({ companyData }) {
     return "warning";
   };
 
-  // For demonstration, form submission just updates local state. Replace with actual API call in production.
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -198,11 +196,10 @@ export default function CompanyPage({ companyData }) {
     };
 
     const payload = await createCompany(companyPayload);
-    if(payload.insertedId) {
-      toast.success("Company registered successfully! Awaiting admin approval.");
 
+    if (payload.insertedId) {
+      toast.success("Company registered successfully! Awaiting admin approval.");
     }
-    
 
     setCompany(companyPayload);
     setIsSubmitting(false);
@@ -348,9 +345,9 @@ export default function CompanyPage({ companyData }) {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <InfoCard label="Company Name" value={company.companyName} />
                 <InfoCard label="Industry" value={company.industry} />
-                <InfoCard label="Website URL" value={company.websiteUrl} />
                 <InfoCard label="Location" value={company.location} />
                 <InfoCard label="Employees" value={company.employeeCount} />
+                <InfoCard label="Status" value={company.status || "pending"} />
 
                 <div className="rounded-2xl border border-neutral-800 bg-black px-4 py-4 sm:col-span-2">
                   <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
@@ -586,7 +583,7 @@ function InfoCard({ label, value }) {
       <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
         {label}
       </p>
-      <p className="mt-2 truncate text-sm font-medium text-neutral-200">
+      <p className="mt-2 truncate text-sm font-medium text-neutral-200 capitalize">
         {value || "N/A"}
       </p>
     </div>
