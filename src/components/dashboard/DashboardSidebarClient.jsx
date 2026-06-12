@@ -4,10 +4,7 @@ import dynamic from "next/dynamic";
 import { LayoutSideContentLeft } from "@gravity-ui/icons";
 
 const DashboardSidebar = dynamic(
-  () =>
-    import("@/components/dashboard/DashboardSidebar").then(
-      (mod) => mod.DashboardSidebar
-    ),
+  () => import("@/components/dashboard/DashboardSidebar"),
   {
     ssr: false,
     loading: () => (

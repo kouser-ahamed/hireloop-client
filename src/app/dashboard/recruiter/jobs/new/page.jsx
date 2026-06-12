@@ -132,7 +132,7 @@ export default function PostJobPage() {
       toast.error("Something went wrong while posting the job.");
     } finally {
       setIsSubmitting(false);
-      redirect("/dashboard/recruiter");
+      redirect("/dashboard/recruiter/jobs");
     }
   };
 

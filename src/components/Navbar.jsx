@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "@/lib/auth-client";
@@ -8,18 +8,21 @@ import { Button } from "@heroui/react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const { data: session, isPending } = useSession();
   const user = session?.user;
+
+  // Only mark mounted on client to avoid SSR mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSignOut = async () => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
           setIsMenuOpen(false);
-
-          // Safe one-time redirect + reload
-          // Logout er por signin page e niye jabe
           window.location.replace("/auth/signin");
         },
         onError: (error) => {
@@ -69,7 +72,7 @@ export default function Navbar() {
           <div className="h-5 w-px bg-neutral-700/60 mx-1" />
 
           <div className="flex items-center gap-4">
-            {isPending ? (
+            {!mounted || isPending ? (
               <span className="text-neutral-500 text-sm">Loading...</span>
             ) : user ? (
               <>
@@ -102,6 +105,7 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+
         <button
           className="md:hidden text-neutral-400 hover:text-white focus:outline-none p-1"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -151,7 +155,7 @@ export default function Navbar() {
           <div className="my-3 border-t border-neutral-800" />
 
           <div className="flex flex-col gap-2">
-            {isPending ? (
+            {!mounted || isPending ? (
               <span className="text-center py-2.5 text-neutral-500 font-medium">
                 Loading...
               </span>

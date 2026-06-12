@@ -14,7 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 
-export function DashboardSidebar() {
+export default function DashboardSidebar() {
   const pathname = usePathname();
   const { data: session, isPending } = useSession();
 
@@ -35,6 +35,11 @@ export function DashboardSidebar() {
       icon: Briefcase,
       label: "Manage Jobs",
       href: "/dashboard/recruiter/jobs",
+    },
+    {
+      icon: Briefcase,
+      label: "Post A Job",
+      href: "/dashboard/recruiter/jobs/new",
     },
     {
       icon: Envelope,
@@ -104,10 +109,8 @@ export function DashboardSidebar() {
         {navItems.map((item) => {
           const Icon = item.icon;
 
-          const isActive =
-            pathname === item.href ||
-            (item.href !== "/dashboard/recruiter" &&
-              pathname?.startsWith(item.href));
+          // FIX: Only exact match is active to prevent multiple active items
+          const isActive = pathname === item.href;
 
           return (
             <Link
