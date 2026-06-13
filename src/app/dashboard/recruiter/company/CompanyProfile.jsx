@@ -61,12 +61,25 @@ export default function CompanyProfile({ recruiter, companyData }) {
   const [logoPreview, setLogoPreview] = useState(companyData?.logoUrl || "");
   const [logoFile, setLogoFile] = useState(null);
 
+  //new
+  const [companyId, setCompanyId] = useState(companyData?._id || null);
+
+  // useEffect(() => {
+  //   if (companyData) {
+  //     setCompany(companyData);
+  //     fillFormStates(companyData);
+  //   }
+  // }, [companyData]);
+
+  //new
+
   useEffect(() => {
-    if (companyData) {
-      setCompany(companyData);
-      fillFormStates(companyData);
-    }
-  }, [companyData]);
+  if (companyData) {
+    setCompany(companyData);
+    setCompanyId(companyData?._id || null);
+    fillFormStates(companyData);
+  }
+}, [companyData]);
 
   const resetFormStates = () => {
     setCompanyName("");
@@ -217,7 +230,38 @@ export default function CompanyProfile({ recruiter, companyData }) {
   // };
 
 
-  const handleSubmit = async (e) => {
+//   const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   setIsSubmitting(true);
+
+//   const companyPayload = {
+//     companyName,
+//     websiteUrl,
+//     industry,
+//     location,
+//     employeeCount,
+//     logoUrl: logoPreview,
+//     description,
+//     status: company?.status || "pending",
+//     recruiterId: recruiter?.id,
+//   };
+
+//   if (isEditing && company?._id) {
+//     await updateCompany(company._id, companyPayload); // EDIT: PATCH call
+//   } else {
+//     const res = await createCompany(companyPayload); // NEW
+//     companyPayload._id = res.insertedId;
+//   }
+
+//   setCompany(companyPayload);
+//   setIsFormOpen(false);
+//   setIsEditing(false);
+//   setIsSubmitting(false);
+// };
+
+// new
+
+const handleSubmit = async (e) => {
   e.preventDefault();
   setIsSubmitting(true);
 
@@ -233,17 +277,39 @@ export default function CompanyProfile({ recruiter, companyData }) {
     recruiterId: recruiter?.id,
   };
 
-  if (isEditing && company?._id) {
-    await updateCompany(company._id, companyPayload); // EDIT: PATCH call
-  } else {
-    const res = await createCompany(companyPayload); // NEW
-    companyPayload._id = res.insertedId;
-  }
+  try {
+    // 🔥 FIX: use companyId not company._id
+    if (isEditing && companyId) {
+      await updateCompany(companyId, companyPayload);
 
-  setCompany(companyPayload);
-  setIsFormOpen(false);
-  setIsEditing(false);
-  setIsSubmitting(false);
+      setCompany({
+        ...company,
+        ...companyPayload,
+        _id: companyId,
+      });
+
+    } else {
+      const res = await createCompany(companyPayload);
+
+      const newId = res.insertedId;
+
+      setCompanyId(newId);
+
+      setCompany({
+        ...companyPayload,
+        _id: newId,
+      });
+    }
+
+    setIsFormOpen(false);
+    setIsEditing(false);
+
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong");
+  } finally {
+    setIsSubmitting(false);
+  }
 };
 
   if (!company && !isFormOpen) {
